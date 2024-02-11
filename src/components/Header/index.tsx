@@ -1,37 +1,17 @@
-import { LibraryBig, Moon, Sun } from "lucide-react";
+"use client";
+import { LibraryBig } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
 import { ModeToggle } from "@/components/ModeToggle";
-// import { z } from 'zod';
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { db } from '@/db';
-// import { user } from '@/db/schema';
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function Header() {
-  // console.log('user', user);
-  // const { setTheme, theme } = useTheme();
-  // const formSchema = z.object({
-  //   search: z.string()
-  // });
-  // const { register, handleSubmit } = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     search: ''
-  //   }
-  // });
-  //
-  // function onSubmitSearchForm(data: z.infer<typeof formSchema>) {
-  //   console.log(data);
-  // }
-
-  // async function onCreateTestUser() {
-  //   const result = await db
-  //     .insert(user)
-  //     .values({ name: 'mushegh', email: 'email' });
-  //   console.log('result', result);
-  // }
+  const router = useRouter();
+  const pathname = usePathname();
+  const [selected, setSelected] = useState(pathname.split("/")[1]);
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-row items-center space-x-2">
@@ -42,16 +22,36 @@ export default function Header() {
       </div>
 
       <div className="hidden flex-row items-center space-x-4 lg:flex">
-        <Button variant="link" className="text-black dark:text-white">
+        <Button
+          variant="link"
+          className={cn(
+            "text-black dark:text-white",
+            selected === "" && "underline"
+          )}
+          onClick={() => {
+            setSelected("");
+            router.push("/");
+          }}
+        >
           Home
         </Button>
-        <Button variant="link" className="text-black dark:text-white">
+        <Button
+          variant="link"
+          className={cn(
+            "text-black dark:text-white",
+            selected === "authors" && "underline"
+          )}
+          onClick={() => {
+            setSelected("authors");
+            router.push("/authors");
+          }}
+        >
           Authors
         </Button>
         <Button variant="link" className="text-black dark:text-white">
           Books
         </Button>
-        <Button variant="link" className="text-black dark:text-white">
+        <Button disabled variant="link" className="text-black dark:text-white">
           Categories
         </Button>
       </div>
@@ -62,36 +62,11 @@ export default function Header() {
         </form>
 
         <ModeToggle />
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        {/* <Avatar className="h-8 w-8"> */}
+        {/*   <AvatarImage src="https://github.com/shadcn.png" /> */}
+        {/*   <AvatarFallback>CN</AvatarFallback> */}
+        {/* </Avatar> */}
       </div>
     </div>
   );
 }
-// ssName="text-black dark:text-white"
-//         >
-//           Home
-//         </Button>
-//         <Button variant="link" className="text-black dark:text-white">
-//           Authors
-//         </Button>
-//         <Button variant="link" className="text-black dark:text-white">
-//           Books
-//         </Button>
-//         <Button variant="link" className="text-black dark:text-white">
-//           Categories
-//         </Button>
-//       </div>
-//       <div className="flex flex-row items-center space-x-4">
-//         <form onSubmit={handleSubmit(onSubmitSearchForm)}>
-//           <Input
-//             {...register('search')}
-//             placeholder="Search"
-//             className="hidden h-full sm:block"
-//           />
-//         </form>
-//         <Button
-//           className="h-8 w-8 p-2"
-//           onClick={()

@@ -1,10 +1,15 @@
+import AuthorForm from "@/components/AuthorForm";
 import BookCard from "@/components/BookCard";
-import Header from "@/components/Header";
+import { FileUploadForm } from "@/components/FileUploadForm";
+import { Images } from "@/components/Images";
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-screen flex-col space-y-10 bg-background p-8 font-sans">
-      <Header />
+    <div>
+      {/* <FileUploadForm /> */}
+      {/**/}
+      {/* <Images /> */}
+      {/* <AuthorForm /> */}
       <div className="flex items-center justify-center">
         <BookCard />
         <BookCard />
