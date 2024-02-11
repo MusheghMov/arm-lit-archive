@@ -13,7 +13,7 @@ export async function FileUploadForm() {
   }
 
   return (
-    <form action={uploadImage}>
+    <form>
       <label htmlFor="image">Image</label>
       <input type="file" id="image" name="image" required />
       <button>Upload</button>
