@@ -43,6 +43,7 @@ export default function AddAuthorsForm() {
   function onSubmit(data: z.infer<typeof AuthorScheme>) {
     createAuthor(data).then(() => {
       router.refresh();
+      form.reset();
     });
     console.log(data);
   }

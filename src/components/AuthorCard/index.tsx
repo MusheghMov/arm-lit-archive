@@ -26,7 +26,7 @@ export default function AuthorCard({
             objectFit="cover"
           />
         </div>
-        <div className="z-10 flex h-full flex-1 flex-col items-center justify-center bg-slate-800 p-2 text-xs font-bold uppercase">
+        <div className="z-10 flex h-full flex-1 flex-col items-center justify-center bg-background p-2 text-xs font-bold uppercase">
           <p>{name}</p>
           <p>
             {deathYear

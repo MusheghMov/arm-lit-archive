@@ -13,11 +13,11 @@ import { CircleUser } from "lucide-react";
 
 export const AddAuthorCard = () => {
   return (
-    <Card className="w-[400px]">
+    <Card className="h-max w-[400px]">
       <CardHeader className="flex w-full flex-row justify-between">
         <div className="flex-1">
           <CardTitle>Add Author Here</CardTitle>
-          <CardDescription>Add your favorit authors</CardDescription>
+          <CardDescription>Add your favourite authors</CardDescription>
         </div>
         <div>
           <Avatar className="h-11 w-11">
