@@ -24,6 +24,6 @@ export async function createAuthor(data: z.infer<typeof authorScheme>) {
 }
 
 export async function getAuthors() {
-  const res = await db.query.authors.findMany();
+  const res = await db.select().from(authors);
   return res;
 }
