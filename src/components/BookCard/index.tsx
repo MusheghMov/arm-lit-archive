@@ -10,7 +10,17 @@ import { Button } from "@/components/ui/button";
 import { Heart, ShareIcon } from "lucide-react";
 import Image from "next/image";
 
-export default function BookCard() {
+export default function BookCard({
+  name,
+  birthYear,
+  deathYear,
+  bio,
+}: {
+  name: string;
+  birthYear: string;
+  deathYear: string;
+  bio: string;
+}) {
   return (
     <Card className="group m-4 h-[300px] overflow-hidden rounded-xl bg-background shadow-md">
       <div className="flex h-full">
@@ -30,15 +40,16 @@ export default function BookCard() {
         <div className="w-0 overflow-hidden opacity-0 transition-all duration-500 group-hover:w-[500px] group-hover:opacity-100">
           <CardHeader>
             <CardTitle className="overflow-hidden text-ellipsis whitespace-nowrap text-2xl font-semibold">
-              Book Title
+              {name || "Author"}
             </CardTitle>
             <CardDescription className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-500">
-              Author Name
+              {deathYear
+                ? `${new Date(birthYear).toLocaleDateString()} - ${new Date(deathYear).toLocaleDateString()}`
+                : new Date(birthYear).toLocaleDateString()}
             </CardDescription>
           </CardHeader>
           <CardContent className="mt-2  line-clamp-3 text-gray-500">
-            This is a brief description of the book. It gives a quick overview
-            of the book's content and main themes.
+            {bio || "Author's bio"}
           </CardContent>
           <div className="mt-5 flex w-full items-center justify-end">
             <Button size="icon" variant="ghost">
