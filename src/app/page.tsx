@@ -1,11 +1,9 @@
+import Hero from "@/components/Hero";
+
 export default function Home() {
   return (
-    <div>
-      {/* <FileUploadForm /> */}
-      {/**/}
-      {/* <Images /> */}
-      {/* <AuthorForm /> */}
-      <div className="flex items-center justify-center"></div>
+    <div className="flex h-[700px] items-center justify-center overflow-hidden">
+      <Hero />
     </div>
   );
 }

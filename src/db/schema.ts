@@ -24,8 +24,13 @@ export const authorRelations = relations(authors, ({ many }) => ({
 export const books = sqliteTable("books", {
   id: integer("id").primaryKey(),
   title: text("title"),
-  year: text("year"),
+  imageUrl: text("imageUrl"),
+  description: text("description"),
+  text: text("text"),
+  year: integer("year"),
+  sourceUrl: text("sourceUrl"),
   fileUrl: text("fileUrl"),
+  authorName: text("author_name"),
   authorId: integer("author_id"),
 });
 

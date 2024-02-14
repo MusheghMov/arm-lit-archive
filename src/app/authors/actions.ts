@@ -5,7 +5,7 @@ import { authors } from "@/db/schema";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 
-const authorScheme = z.object({
+const AuthorScheme = z.object({
   name: z.string().min(1, {
     message: "Author name is required",
   }),
@@ -14,7 +14,7 @@ const authorScheme = z.object({
   deathDate: z.string().optional(),
 });
 
-export async function createAuthor(data: z.infer<typeof authorScheme>) {
+export async function createAuthor(data: z.infer<typeof AuthorScheme>) {
   const res = await db.insert(authors).values({
     name: data.name,
     bio: data.bio,

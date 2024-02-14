@@ -1,12 +1,17 @@
 "use client";
-import { LibraryBig } from "lucide-react";
+import { LibraryBig, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/ModeToggle";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const router = useRouter();
@@ -21,6 +26,23 @@ export default function Header() {
         </h2>
       </div>
 
+      <DropdownMenu>
+        <DropdownMenuTrigger className="lg:hidden">
+          <Menu />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => router.push("/")}>
+            Home
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/authors")}>
+            Authors
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => router.push("/books")}>
+            Books
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <div className="hidden flex-row items-center space-x-4 lg:flex">
         <Button
           variant="link"
@@ -48,7 +70,17 @@ export default function Header() {
         >
           Authors
         </Button>
-        <Button variant="link" className="text-black dark:text-white">
+        <Button
+          variant="link"
+          className={cn(
+            "text-black dark:text-white",
+            selected === "books" && "underline"
+          )}
+          onClick={() => {
+            setSelected("books");
+            router.push("/books");
+          }}
+        >
           Books
         </Button>
         <Button disabled variant="link" className="text-black dark:text-white">

@@ -15,6 +15,34 @@
       "when": 1707607034344,
       "tag": "0001_soft_malcolm_colcord",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707675667822,
+      "tag": "0002_deep_king_cobra",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1707676521335,
+      "tag": "0003_brainy_the_executioner",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1707748944953,
+      "tag": "0004_equal_onslaught",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1707750729629,
+      "tag": "0005_lovely_puck",
+      "breakpoints": true
     }
   ]
 }
