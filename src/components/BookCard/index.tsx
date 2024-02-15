@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { AspectRatio } from "../ui/aspect-ratio";
+import { BookImage } from "lucide-react";
 
 export default function BookCard({
   book,
@@ -19,34 +21,40 @@ export default function BookCard({
   };
 }) {
   return (
-    <div className="group flex h-min w-44 cursor-pointer flex-col overflow-hidden rounded border p-1">
+    <Link
+      href={{ pathname: `/books/${book.id}` }}
+      className="group flex h-min w-44 cursor-pointer flex-col overflow-hidden rounded border p-1"
+    >
       <div className="overflow-hidden rounded">
         <AspectRatio
           ratio={12 / 16}
           className="relative transition-all group-hover:scale-125"
         >
-          <Image
-            alt="Author's image"
-            className="w-full object-cover"
-            fill={true}
-            loading="lazy"
-            quality={10}
-            src={
-              book.imageUrl ||
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
-            }
-          />
+          <BookImage className="h-full w-full" />
+          {/* <Image */}
+          {/*   alt="Author's image" */}
+          {/*   className="w-full object-cover" */}
+          {/*   fill={true} */}
+          {/*   loading="lazy" */}
+          {/*   quality={10} */}
+          {/*   src={ */}
+          {/*     book.imageUrl || */}
+          {/*     "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg" */}
+          {/*   } */}
+          {/* /> */}
         </AspectRatio>
       </div>
 
       <div className="h-16 px-2 pt-1">
-        <p className="text-sm font-bold capitalize">{book.title}</p>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold capitalize">
+          {book.title}
+        </p>
 
         <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-500">
           {book.authorName || "Author"}
         </p>
       </div>
-    </div>
+    </Link>
 
     // <Card className="group m-4 h-[300px] overflow-hidden rounded-xl bg-background shadow-md">
     //   <div className="flex h-full">

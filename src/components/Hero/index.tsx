@@ -11,12 +11,12 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <Carousel className="h-full w-full p-6 [&>div]:h-full">
+    <Carousel className="h-full w-full [&>div]:h-full">
       <CarouselContent className="h-full">
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index} className="h-full">
-            <div className="relative h-full bg-background p-6">
-              <div className="flex h-full w-[70%] flex-col justify-evenly">
+            <div className="relative h-full bg-background">
+              <div className="flex h-full w-[70%] flex-col justify-evenly px-16">
                 <p className="text-lg font-light italic">- Authors</p>
                 <p className="z-10 text-7xl font-semibold text-white mix-blend-difference">
                   Hovhannes Tumanyan asdfasdf asdf asdf asdf asdf asdf
@@ -41,8 +41,8 @@ export default function Hero() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-0" />
-      <CarouselNext className="right-0" />
+      <CarouselPrevious className="left-4" />
+      <CarouselNext className="right-4" />
     </Carousel>
   );
 }

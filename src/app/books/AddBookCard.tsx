@@ -41,7 +41,7 @@ export const AddBookCard = ({ authors }: { authors: AuthorType }) => {
 
   if (isDesktop) {
     return (
-      <Card className="h-max w-[400px]">
+      <Card className="sticky top-4 h-max w-[400px]">
         <CardHeader className="flex w-full flex-row justify-between">
           <div className="flex-1">
             <CardTitle>Add book here</CardTitle>
@@ -102,7 +102,7 @@ export const AddBookCard = ({ authors }: { authors: AuthorType }) => {
   } else {
     return (
       <Drawer>
-        <DrawerTrigger className="top-0 rounded-md border p-2">
+        <DrawerTrigger className="sticky top-8 rounded-md border p-2">
           <PlusCircle />
         </DrawerTrigger>
         <DrawerContent className="h-max w-full p-4">

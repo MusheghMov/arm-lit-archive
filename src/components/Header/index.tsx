@@ -1,7 +1,5 @@
 "use client";
 import { LibraryBig, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/ModeToggle";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,7 +17,7 @@ export default function Header() {
   const pathname = usePathname();
   const [selected, setSelected] = useState(pathname.split("/")[1]);
   return (
-    <div className="flex flex-row items-center justify-between">
+    <div className="relative flex flex-row items-center justify-between px-4 py-4 lg:px-8">
       <div className="flex flex-row items-center space-x-2">
         <LibraryBig className="min-h-6 min-w-6" />
         <h2 className="hidden text-base font-bold sm:block">
@@ -27,7 +25,7 @@ export default function Header() {
         </h2>
       </div>
 
-      <div className="hidden flex-row items-center space-x-4 lg:flex">
+      <div className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] flex-row items-center space-x-10 lg:flex">
         <Link
           href="/"
           prefetch
