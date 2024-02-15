@@ -24,6 +24,7 @@ export const authorRelations = relations(authors, ({ many }) => ({
 export const books = sqliteTable("books", {
   id: integer("id").primaryKey(),
   title: text("title"),
+  titleTranslit: text("titleTranslit"),
   imageUrl: text("imageUrl"),
   description: text("description"),
   text: text("text"),

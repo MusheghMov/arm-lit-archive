@@ -5,25 +5,21 @@ import { authors, books } from "@/db/schema";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 import { eq } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-zod";
 
-const BookScheme = z.object({
-  title: z.string(),
-  imageUrl: z.string(),
-  text: z.string(),
-  description: z.string(),
-  year: z.number(),
-  fileUrl: z.string(),
-  authorId: z.number(),
-});
+const schemaForCreateBook = createInsertSchema(books);
 
 export async function createBook(
-  data: z.infer<typeof BookScheme>,
+  data: z.infer<typeof schemaForCreateBook>,
   authorId: number,
-  authorName: string
+  authorName: string,
+  bookImageUrl: string | undefined
 ) {
   const res = await db.insert(books).values({
     title: data.title,
-    imageUrl: data.imageUrl,
+    titleTranslit: data.titleTranslit,
+    sourceUrl: data.sourceUrl,
+    imageUrl: bookImageUrl,
     text: data.text,
     year: data.year,
     fileUrl: data.fileUrl,

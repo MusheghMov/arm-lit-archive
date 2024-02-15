@@ -14,9 +14,13 @@ const AuthorScheme = z.object({
   deathDate: z.string().optional(),
 });
 
-export async function createAuthor(data: z.infer<typeof AuthorScheme>) {
+export async function createAuthor(
+  data: z.infer<typeof AuthorScheme>,
+  imageUrl: string | undefined
+) {
   const res = await db.insert(authors).values({
     name: data.name,
+    imageUrl: imageUrl,
     bio: data.bio,
     birthDate: data.birthDate,
     deathDate: data.deathDate,

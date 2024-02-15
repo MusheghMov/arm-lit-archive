@@ -29,7 +29,11 @@ const AuthorScheme = z.object({
   deathDate: z.string().optional(),
 });
 
-export default function AddAuthorsForm() {
+export default function AddAuthorsForm({
+  imageUrl,
+}: {
+  imageUrl: string | undefined;
+}) {
   const router = useRouter();
   const form = useForm<z.infer<typeof AuthorScheme>>({
     resolver: zodResolver(AuthorScheme),
@@ -41,12 +45,12 @@ export default function AddAuthorsForm() {
     },
   });
   function onSubmit(data: z.infer<typeof AuthorScheme>) {
-    createAuthor(data).then(() => {
+    createAuthor(data, imageUrl).then(() => {
       router.refresh();
       form.reset();
     });
-    console.log(data);
   }
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

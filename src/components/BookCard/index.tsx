@@ -2,14 +2,21 @@ import Image from "next/image";
 import { AspectRatio } from "../ui/aspect-ratio";
 
 export default function BookCard({
-  title,
-  authorName,
+  book,
 }: {
-  title: string;
-  year: number;
-  description: string;
-  authorName: string;
-  authorId: number;
+  book: {
+    id: number;
+    text: string | null;
+    imageUrl: string | null;
+    description: string | null;
+    title: string | null;
+    titleTranslit: string | null;
+    year: number | null;
+    sourceUrl: string | null;
+    fileUrl: string | null;
+    authorName: string | null;
+    authorId: number | null;
+  };
 }) {
   return (
     <div className="group flex h-min w-44 cursor-pointer flex-col overflow-hidden rounded border p-1">
@@ -24,16 +31,19 @@ export default function BookCard({
             fill={true}
             loading="lazy"
             quality={10}
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            src={
+              book.imageUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            }
           />
         </AspectRatio>
       </div>
 
       <div className="h-16 px-2 pt-1">
-        <p className="text-sm font-bold capitalize">{title}</p>
+        <p className="text-sm font-bold capitalize">{book.title}</p>
 
         <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-500">
-          {authorName}
+          {book.authorName || "Author"}
         </p>
       </div>
     </div>

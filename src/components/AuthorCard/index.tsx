@@ -26,7 +26,10 @@ export default function AuthorCard({
       >
         <div className="flex-[3]">
           <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            src={
+              author?.imageUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            }
             className="rounded"
             loading="lazy"
             quality={10}

@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function Header() {
   const router = useRouter();
@@ -26,72 +27,62 @@ export default function Header() {
         </h2>
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="lg:hidden">
-          <Menu />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => router.push("/")}>
-            Home
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/authors")}>
-            Authors
-          </DropdownMenuItem>
-
-          <DropdownMenuItem onClick={() => router.push("/books")}>
-            Books
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
       <div className="hidden flex-row items-center space-x-4 lg:flex">
-        <Button
-          variant="link"
+        <Link
+          href="/"
+          prefetch
           className={cn(
-            "text-black dark:text-white",
-            selected === "" && "underline"
+            "border-b-foreground text-black hover:border-b dark:text-white",
+            selected === "" && "border-b"
           )}
-          onClick={() => {
-            setSelected("");
-            router.push("/");
-          }}
+          onClick={() => setSelected("")}
         >
           Home
-        </Button>
-        <Button
-          variant="link"
+        </Link>
+        <Link
+          href="/authors"
+          prefetch
           className={cn(
-            "text-black dark:text-white",
-            selected === "authors" && "underline"
+            "border-b-foreground text-black hover:border-b dark:text-white",
+            selected === "authors" && "border-b"
           )}
-          onClick={() => {
-            setSelected("authors");
-            router.push("/authors");
-          }}
+          onClick={() => setSelected("authors")}
         >
           Authors
-        </Button>
-        <Button
-          variant="link"
+        </Link>
+        <Link
+          href="/books"
           className={cn(
-            "text-black dark:text-white",
-            selected === "books" && "underline"
+            "border-b-foreground text-black hover:border-b dark:text-white",
+            selected === "books" && "border-b"
           )}
-          onClick={() => {
-            setSelected("books");
-            router.push("/books");
-          }}
+          onClick={() => setSelected("books")}
         >
           Books
-        </Button>
-        <Button disabled variant="link" className="text-black dark:text-white">
-          Categories
-        </Button>
+        </Link>
       </div>
 
-      <div className="hidden flex-row items-center space-x-4 lg:flex">
-        <form>
-          <Input placeholder="Search" className="hidden h-full sm:block" />
-        </form>
+      <div className="flex flex-row items-center space-x-4 lg:flex">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="lg:hidden">
+            <Menu />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => router.push("/")}>
+              Home
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/authors")}>
+              Authors
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => router.push("/books")}>
+              Books
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* <form> */}
+        {/*   <Input placeholder="Search" className="hidden h-full sm:block" /> */}
+        {/* </form> */}
 
         <ModeToggle />
         {/* <Avatar className="h-8 w-8"> */}

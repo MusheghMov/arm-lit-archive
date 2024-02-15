@@ -31,14 +31,22 @@ type AuthorType = {
 
 const BookScheme = z.object({
   title: z.string(),
+  titleTranslit: z.string().optional(),
+  sourceUrl: z.string().optional(),
   imageUrl: z.string(),
   text: z.string(),
   year: z.coerce.number(),
   fileUrl: z.string(),
   authorId: z.number(),
-  description: z.string(),
+  description: z.string().optional(),
 });
-export default function AddAuthorsForm({ authors }: { authors: AuthorType }) {
+export default function AddABookForm({
+  authors,
+  bookImageUrl,
+}: {
+  authors: AuthorType;
+  bookImageUrl: string | undefined;
+}) {
   const [selectedAuthor, setSelectedAuthor] = useState<AuthorType[0] | null>(
     null
   );
@@ -47,6 +55,9 @@ export default function AddAuthorsForm({ authors }: { authors: AuthorType }) {
     resolver: zodResolver(BookScheme),
     defaultValues: {
       title: "",
+      titleTranslit: "",
+      sourceUrl: "",
+      description: "",
       imageUrl: "",
       text: "",
       year: 0,
@@ -59,14 +70,16 @@ export default function AddAuthorsForm({ authors }: { authors: AuthorType }) {
       form.setError("authorId", { message: "Author is required" });
       return;
     }
-    createBook(data, selectedAuthor.id, selectedAuthor.name).then(() => {
-      router.refresh();
-      form.reset();
-    });
+    createBook(data, selectedAuthor.id, selectedAuthor.name, bookImageUrl).then(
+      () => {
+        router.refresh();
+        form.reset();
+      }
+    );
   }
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="title"
@@ -80,21 +93,45 @@ export default function AddAuthorsForm({ authors }: { authors: AuthorType }) {
             </FormItem>
           )}
         />
-        <div className="flex w-full flex-row space-x-4">
-          <FormField
-            control={form.control}
-            name="year"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Year</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="titleTranslit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Book title translit</FormLabel>
+              <FormControl>
+                <Input placeholder="Title translit" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="sourceUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Source link</FormLabel>
+              <FormControl>
+                <Input placeholder="Source link" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="year"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>Year</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="description"

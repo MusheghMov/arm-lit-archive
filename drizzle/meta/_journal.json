@@ -43,6 +43,13 @@
       "when": 1707750729629,
       "tag": "0005_lovely_puck",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1707955735191,
+      "tag": "0006_handy_dragon_lord",
+      "breakpoints": true
     }
   ]
 }
