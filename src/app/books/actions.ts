@@ -4,7 +4,7 @@ import db from "@/db";
 import { authors, books } from "@/db/schema";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 
 const schemaForCreateBook = createInsertSchema(books);
@@ -33,7 +33,7 @@ export async function createBook(
 }
 
 export async function getBooks() {
-  const res = await db.select().from(books);
+  const res = await db.select().from(books).limit(10).orderBy(desc(books.id));
   revalidateTag("books");
   return res;
 }
