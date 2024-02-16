@@ -1,8 +1,7 @@
 import BookCard from "@/components/BookCard";
 import { getAuthor } from "./actions";
-import { ChevronLeft, Minus } from "lucide-react";
+import { Minus } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default async function AuthorPage({

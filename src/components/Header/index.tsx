@@ -20,9 +20,9 @@ export default function Header() {
     <div className="relative flex flex-row items-center justify-between px-4 py-4 lg:px-8">
       <div className="flex flex-row items-center space-x-2">
         <LibraryBig className="min-h-6 min-w-6" />
-        <h2 className="hidden text-base font-bold sm:block">
+        <Link href="/" className="hidden text-base font-bold sm:block">
           Armenian Literature Archive
-        </h2>
+        </Link>
       </div>
 
       <div className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] flex-row items-center space-x-10 lg:flex">

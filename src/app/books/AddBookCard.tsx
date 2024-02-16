@@ -41,7 +41,7 @@ export const AddBookCard = ({ authors }: { authors: AuthorType }) => {
 
   if (isDesktop) {
     return (
-      <Card className="sticky top-4 h-max w-[400px]">
+      <Card className="sticky top-0 h-max w-[400px]">
         <CardHeader className="flex w-full flex-row justify-between">
           <div className="flex-1">
             <CardTitle>Add book here</CardTitle>
