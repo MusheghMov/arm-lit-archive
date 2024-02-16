@@ -38,7 +38,7 @@ export default async function AuthorPage({
           </div>
           <Minus size="40px" />
           <div>
-            <p className="text-xs uppercase">Dead</p>
+            <p className="text-xs uppercase">Died</p>
             <p className="text-4xl font-bold">
               {new Date(author.deathDate!)?.toLocaleDateString("en-GB", {
                 weekday: undefined,
@@ -52,8 +52,10 @@ export default async function AuthorPage({
         </div>
       </div>
       <div className="flex flex-1 flex-col space-y-10 px-4 py-4 lg:overflow-hidden lg:px-10">
-        <p className="text-4xl font-medium capitalize">{author?.name}</p>
-        <p>{author?.bio}</p>
+        <div className="flex flex-col">
+          <p className="text-4xl font-medium capitalize">{author?.name}</p>
+          <p className="text-gray-500">{author?.bio}</p>
+        </div>
         <div className="flex w-full flex-col">
           <p className="text-2xl font-bold">Books</p>
           <div className="flex h-full w-full">

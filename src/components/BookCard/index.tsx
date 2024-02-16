@@ -30,7 +30,7 @@ export default function BookCard({
           ratio={12 / 16}
           className="relative transition-all group-hover:scale-125"
         >
-          <BookImage className="h-full w-full" />
+          {/* <BookImage className="h-full w-full" /> */}
           {/* <Image */}
           {/*   alt="Author's image" */}
           {/*   className="w-full object-cover" */}
