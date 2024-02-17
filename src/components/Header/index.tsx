@@ -18,12 +18,12 @@ export default function Header() {
   const [selected, setSelected] = useState(pathname.split("/")[1]);
   return (
     <div className="relative flex flex-row items-center justify-between px-4 py-4 lg:px-8">
-      <div className="flex flex-row items-center space-x-2">
+      <Link href="/" className="flex flex-row items-center space-x-2">
         <LibraryBig className="min-h-6 min-w-6" />
-        <Link href="/" className="hidden text-base font-bold sm:block">
+        <h2 className="hidden text-base font-bold sm:block">
           Armenian Literature Archive
-        </Link>
-      </div>
+        </h2>
+      </Link>
 
       <div className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] flex-row items-center space-x-10 lg:flex">
         <Link

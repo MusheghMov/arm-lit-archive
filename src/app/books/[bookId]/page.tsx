@@ -15,7 +15,7 @@ export default async function BookPage({
         <div className="flex flex-1 flex-col items-end space-y-2 px-8">
           <p className="text-3xl font-bold">{book?.title}</p>
           <p className="text-slate-500">
-            {book?.author?.name} | {book.year}
+            {book?.author?.name} {book?.year! > 0 && `| ${book?.year}`}
           </p>
           {book?.sourceUrl && (
             <a
@@ -39,7 +39,7 @@ export default async function BookPage({
           />
         </div>
       </div>
-      <pre className="w-full whitespace-pre-wrap px-4 lg:px-24">
+      <pre className="flex w-full items-center justify-center whitespace-pre-wrap px-4 lg:px-24">
         {book?.text}
       </pre>
     </div>

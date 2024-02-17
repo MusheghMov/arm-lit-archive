@@ -32,8 +32,16 @@ export async function createBook(
   return res;
 }
 
-export async function getBooks() {
-  const res = await db.select().from(books).limit(10).orderBy(desc(books.id));
+export async function getBooks({
+  offset,
+  limit = 30,
+}: { offset?: number; limit?: number } = {}) {
+  const res = await db
+    .select()
+    .from(books)
+    .limit(limit)
+    .offset(offset!)
+    .orderBy(desc(books.id));
   revalidateTag("books");
   return res;
 }

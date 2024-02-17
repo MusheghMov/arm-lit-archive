@@ -12,7 +12,7 @@ export default async function AuthorPage({
   const authorId = +params.authorId;
   const author = await getAuthor(authorId);
   return (
-    <div className="flex h-full w-full flex-col lg:flex-row lg:space-x-20">
+    <div className="flex h-full w-full flex-col overflow-scroll lg:flex-row lg:space-x-20">
       <div className="flex flex-grow-0 flex-col">
         <div className="relative h-[500px] w-full overflow-hidden lg:h-full lg:rounded-br-[100px]">
           <Image

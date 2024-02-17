@@ -25,7 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-screen w-screen flex-col bg-background font-sans">
+          <div className="flex h-screen w-screen flex-col overflow-hidden bg-background font-sans">
             <Header />
             {children}
           </div>
