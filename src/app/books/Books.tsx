@@ -4,7 +4,7 @@ import { getBooks } from "./actions";
 import BookCard from "@/components/BookCard";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export default function Books() {
   const {
@@ -42,8 +42,8 @@ export default function Books() {
   return (
     <div className="flex flex-row flex-wrap gap-6">
       <div className="flex flex-row flex-wrap justify-around gap-6 md:justify-start">
-        {infiniteData?.pages.map((page) => (
-          <>
+        {infiniteData?.pages.map((page, index) => (
+          <React.Fragment key={index}>
             {page.map((book, i) => {
               if (i === page.length - 1) {
                 return <BookCard key={book.id} ref={ref} book={book} />;
@@ -51,7 +51,7 @@ export default function Books() {
 
               return <BookCard key={book.id} book={book} />;
             })}
-          </>
+          </React.Fragment>
         ))}
       </div>
       {isFetchingNextPage && (

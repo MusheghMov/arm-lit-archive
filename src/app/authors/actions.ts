@@ -30,8 +30,11 @@ export async function createAuthor(
   return res;
 }
 
-export async function getAuthors() {
-  const res = await db.select().from(authors);
+export async function getAuthors({ search }: { search?: string } = {}) {
+  const res = await db.query.authors.findMany({
+    where: (authors, { like }) =>
+      like(authors.name, search ? `%${search}%` : "%"),
+  });
   revalidateTag("authors");
   return res;
 }

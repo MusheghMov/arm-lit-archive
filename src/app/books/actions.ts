@@ -46,8 +46,18 @@ export async function getBooks({
   return res;
 }
 
-export async function getBooksByAuthor(authorId: number) {
-  const res = await db.select().from(books).where(eq(books.authorId, authorId));
+export async function getBooksByAuthor(
+  { authorId, limit }: { authorId: number; limit?: number } = { authorId: 0 }
+) {
+  const res = await db.query.books.findMany({
+    where: eq(books.authorId, authorId),
+    with: {
+      author: true,
+    },
+    limit: limit,
+    orderBy: desc(books.id),
+  });
+
   revalidateTag("books");
   return res;
 }

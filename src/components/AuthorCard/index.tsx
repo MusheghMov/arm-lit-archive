@@ -1,5 +1,4 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,19 +25,18 @@ export default function AuthorCard({
         className="flex flex-col justify-end overflow-hidden"
       >
         <div className="flex-[3] overflow-hidden">
-          <User2 className="h-full w-full text-slate-300" />
-          {/* <Image */}
-          {/*   src={ */}
-          {/*     author?.imageUrl || */}
-          {/*     "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg" */}
-          {/*   } */}
-          {/*   className="rounded" */}
-          {/*   loading="lazy" */}
-          {/*   quality={10} */}
-          {/*   alt="Author's image" */}
-          {/*   layout="fill" */}
-          {/*   objectFit="cover" */}
-          {/* /> */}
+          <Image
+            src={
+              author?.imageUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            }
+            className="rounded object-cover"
+            width={200}
+            height={300}
+            loading="lazy"
+            quality={10}
+            alt="Author's image"
+          />
         </div>
         <div className="z-10 flex h-full flex-1 flex-col items-center justify-center bg-background p-2 text-xs font-bold uppercase">
           <p className="text-center">{author?.name}</p>

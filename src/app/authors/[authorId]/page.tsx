@@ -16,7 +16,10 @@ export default async function AuthorPage({
       <div className="flex flex-grow-0 flex-col">
         <div className="relative h-[500px] w-full overflow-hidden lg:h-full lg:rounded-br-[100px]">
           <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            src={
+              author?.imageUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
+            }
             className="h-full w-full object-cover"
             fill
             alt="author"
@@ -51,11 +54,11 @@ export default async function AuthorPage({
         </div>
       </div>
       <div className="flex flex-1 flex-col space-y-10 px-4 py-4 lg:overflow-hidden lg:px-10">
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-2">
           <p className="text-4xl font-medium capitalize">{author?.name}</p>
           <p className="text-gray-500">{author?.bio}</p>
         </div>
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col space-y-2">
           <p className="text-2xl font-bold">Books</p>
           <div className="flex h-full w-full">
             {author?.books.length > 0 ? (
