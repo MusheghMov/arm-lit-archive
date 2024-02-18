@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <div className="flex h-[100dvh] w-screen flex-col overflow-hidden bg-background font-sans">
             <Header />
             {children}
+            <Analytics />
           </div>
         </ThemeProvider>
       </body>
