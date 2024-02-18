@@ -53,8 +53,10 @@ export default forwardRef(function BookCard(
         <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold capitalize">
           {book.title}
         </p>
-
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-500">
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize text-slate-500">
+          {book.titleTranslit}
+        </p>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-slate-500">
           {book.authorName || "Author"}
         </p>
       </div>

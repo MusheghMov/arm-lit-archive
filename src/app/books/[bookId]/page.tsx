@@ -13,7 +13,8 @@ export default async function BookPage({
     <div className="flex w-full flex-col items-center space-y-10 overflow-scroll py-4 lg:pt-8">
       <div className="flex w-full flex-col-reverse lg:flex-row">
         <div className="flex w-full flex-col items-center space-y-2 px-8">
-          <p className="text-3xl font-bold">{book?.title}</p>
+          <p className="text-center text-3xl font-bold">{book?.title}</p>
+          <p className="text-center text-slate-500">{book?.titleTranslit}</p>
           <div className="flex flex-row space-x-1 text-slate-500">
             <Link
               href={`/authors/${book.author?.id}`}

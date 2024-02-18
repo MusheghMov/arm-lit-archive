@@ -1,19 +1,15 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import Link from "next/link";
+import { authors } from "@/db/schema";
+import { z } from "zod";
+import { createSelectSchema } from "drizzle-zod";
+const AuthorSelectType = createSelectSchema(authors);
 
 export default function AuthorCard({
   author,
 }: {
-  author: {
-    id: number;
-    name: string | null;
-    imageUrl: string | null;
-    color: string | null;
-    bio: string | null;
-    birthDate: string | null;
-    deathDate: string | null;
-  };
+  author: z.infer<typeof AuthorSelectType>;
 }) {
   return (
     <Link
