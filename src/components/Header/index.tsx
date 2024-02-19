@@ -17,7 +17,7 @@ export default function Header() {
   const pathname = usePathname();
   const [selected, setSelected] = useState(pathname.split("/")[1]);
   return (
-    <div className="relative flex flex-row items-center justify-between px-4 py-4 lg:px-8">
+    <div className="sticky top-0 z-50 flex flex-row items-center justify-between bg-background px-4 py-4 lg:px-8">
       <Link href="/" className="flex flex-row items-center space-x-2">
         <LibraryBig className="min-h-6 min-w-6" />
         <h2 className="hidden text-base font-bold sm:block">
