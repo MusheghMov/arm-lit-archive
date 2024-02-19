@@ -35,13 +35,23 @@ export async function createBook(
 export async function getBooks({
   offset,
   limit = 30,
-}: { offset?: number; limit?: number } = {}) {
-  const res = await db
-    .select()
-    .from(books)
-    .limit(limit)
-    .offset(offset!)
-    .orderBy(desc(books.id));
+  search = "",
+}: {
+  offset?: number;
+  limit?: number;
+  search?: string;
+}) {
+  const res = await db.query.books.findMany({
+    where: (books, { or, like }) =>
+      or(
+        like(books.title, `%${search}%`),
+        like(books.titleTranslit, `%${search}%`),
+        like(books.authorName, `%${search}%`)
+      ),
+    limit,
+    offset,
+    orderBy: desc(books.id),
+  });
   revalidateTag("books");
   return res;
 }

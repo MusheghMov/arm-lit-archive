@@ -41,7 +41,7 @@ export default function Hero() {
               <div className="absolute top-0 h-full w-full overflow-hidden md:right-10 md:top-20 md:h-[400px] md:w-[400px] md:rounded-full lg:right-20 lg:top-10 lg:h-[600px] lg:w-[600px]">
                 <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
-                  alt="asd"
+                  alt="Hovhannes Tumanyan"
                   fill
                   loading="eager"
                   className="object-cover"
@@ -67,7 +67,7 @@ export default function Hero() {
               <div className="absolute top-0 h-full w-full overflow-hidden md:right-10 md:top-20 md:h-[400px] md:w-[400px] md:rounded-full lg:right-20 lg:top-10 lg:h-[600px] lg:w-[600px]">
                 <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Yeghishe_Charents_Armenian_poet.jpg/1200px-Yeghishe_Charents_Armenian_poet.jpg"
-                  alt="asd"
+                  alt="Eghishe Charents"
                   fill
                   loading="lazy"
                   className="object-cover"
@@ -93,7 +93,7 @@ export default function Hero() {
               <div className="absolute top-0 h-full w-full overflow-hidden md:right-10 md:top-20 md:h-[400px] md:w-[400px] md:rounded-full lg:right-20 lg:top-10 lg:h-[600px] lg:w-[600px]">
                 <Image
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Vahan_Teryan_portrait.jpg/1920px-Vahan_Teryan_portrait.jpg"
-                  alt="asd"
+                  alt="Vahan Teryan"
                   fill
                   loading="lazy"
                   className="object-cover"

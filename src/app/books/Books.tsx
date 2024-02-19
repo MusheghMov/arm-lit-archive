@@ -5,17 +5,21 @@ import BookCard from "@/components/BookCard";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { Loader2 } from "lucide-react";
 import React, { useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 
 export default function Books() {
+  const { register, watch } = useForm({ defaultValues: { search: "" } });
   const {
     data: infiniteData,
+    isLoading,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["infiniteBooks"],
+    queryKey: ["infiniteBooks", { search: watch("search") }],
     queryFn: ({ pageParam }: { pageParam: number | undefined }) => {
-      return getBooks({ offset: pageParam });
+      return getBooks({ offset: pageParam, search: watch("search") });
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
@@ -40,25 +44,37 @@ export default function Books() {
   }, [entry, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex flex-row flex-wrap gap-6">
-      <div className="flex flex-row flex-wrap justify-around gap-6 md:justify-start">
-        {infiniteData?.pages.map((page, index) => (
-          <React.Fragment key={index}>
-            {page.map((book, i) => {
-              if (i === page.length - 1) {
-                return <BookCard key={book.id} ref={ref} book={book} />;
-              }
-
-              return <BookCard key={book.id} book={book} />;
-            })}
-          </React.Fragment>
-        ))}
-      </div>
-      {isFetchingNextPage && (
+    <div className="flex w-full flex-col gap-6">
+      <Input
+        {...register("search")}
+        className="max-w-[400px]"
+        placeholder="Search for book by title or author name"
+      />
+      {isLoading && (
         <div className="flex w-full items-center justify-center">
           <Loader2 className="animate-spin" />
         </div>
       )}
+      <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row flex-wrap justify-around gap-6 md:justify-start">
+          {infiniteData?.pages.map((page, index) => (
+            <React.Fragment key={index}>
+              {page.map((book, i) => {
+                if (i === page.length - 1) {
+                  return <BookCard key={book.id} ref={ref} book={book} />;
+                }
+
+                return <BookCard key={book.id} book={book} />;
+              })}
+            </React.Fragment>
+          ))}
+        </div>
+        {isFetchingNextPage && (
+          <div className="flex w-full items-center justify-center">
+            <Loader2 className="animate-spin" />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
