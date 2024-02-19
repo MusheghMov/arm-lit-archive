@@ -10,7 +10,7 @@ export default async function BookPage({
   const authorId = +params.bookId;
   const book = await getBook(authorId);
   return (
-    <div className="flex w-full flex-col items-center space-y-10 overflow-scroll py-4 lg:pt-8">
+    <div className="flex w-full flex-col items-center space-y-10 overflow-scroll py-10 lg:pt-8">
       <div className="flex w-full flex-col-reverse lg:flex-row">
         <div className="flex w-full flex-col items-center space-y-2 px-8">
           <p className="text-center text-3xl font-bold">{book?.title}</p>
