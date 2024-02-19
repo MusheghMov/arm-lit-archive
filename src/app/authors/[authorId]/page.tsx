@@ -11,8 +11,8 @@ export default async function AuthorPage({
   const authorId = +params.authorId;
   const author = await getAuthor(authorId);
   return (
-    <div className="flex w-full flex-col items-start justify-between pb-10 lg:flex-row lg:space-x-10">
-      <div className="flex w-full grow-[1] flex-col lg:sticky lg:top-20 lg:w-auto">
+    <div className="flex w-full flex-col items-start justify-between overflow-hidden pb-10 lg:flex-row lg:space-x-10">
+      <div className="flex w-full grow-[1] flex-col lg:w-auto">
         <div className="relative min-h-[650px] min-w-[500px] overflow-hidden lg:rounded-br-[100px]">
           <Image
             src={
@@ -24,10 +24,10 @@ export default async function AuthorPage({
             alt="author"
           />
         </div>
-        <div className="flex flex-row items-center space-x-4 px-8 py-14">
+        <div className="flex w-full flex-row items-center justify-evenly gap-2 px-8 py-14">
           <div>
             <p className="text-xs uppercase">Born</p>
-            <p className="text-4xl font-bold">
+            <p className="text-base font-bold md:text-3xl">
               {new Date(author.birthDate!)?.toLocaleDateString("en-GB", {
                 weekday: undefined,
                 day: "numeric",
@@ -40,7 +40,7 @@ export default async function AuthorPage({
           <Minus size="40px" />
           <div>
             <p className="text-xs uppercase">Died</p>
-            <p className="text-4xl font-bold">
+            <p className="text-base font-bold md:text-3xl">
               {new Date(author.deathDate!)?.toLocaleDateString("en-GB", {
                 weekday: undefined,
                 day: "numeric",
@@ -67,7 +67,6 @@ export default async function AuthorPage({
                 ))}
               </div>
             ) : (
-              // </ScrollArea>
               <p>No books</p>
             )}
           </div>
