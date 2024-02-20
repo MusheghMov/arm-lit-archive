@@ -21,6 +21,7 @@ export default async function AuthorPage({
             }
             className="h-full w-full object-cover object-top"
             fill
+            quality={50}
             alt="author"
           />
         </div>

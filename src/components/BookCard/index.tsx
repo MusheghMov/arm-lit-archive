@@ -26,7 +26,7 @@ export default forwardRef(function BookCard(
   return (
     <Link
       href={{ pathname: `/books/${book.id}` }}
-      className="group flex h-min w-32 cursor-pointer flex-col overflow-hidden rounded border p-1 md:w-44"
+      className="group flex h-min w-full max-w-[200px] cursor-pointer flex-col overflow-hidden rounded border p-1 md:w-44"
       ref={ref}
     >
       <div className="overflow-hidden rounded">

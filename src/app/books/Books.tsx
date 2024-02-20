@@ -56,7 +56,7 @@ export default function Books() {
         </div>
       )}
       <div className="flex flex-row flex-wrap">
-        <div className="flex flex-row flex-wrap justify-between gap-6 md:justify-start">
+        <div className="grid grid-cols-2 justify-between gap-6 md:flex md:flex-row md:flex-wrap md:justify-start">
           {infiniteData?.pages.map((page, index) => (
             <React.Fragment key={index}>
               {page.map((book, i) => {

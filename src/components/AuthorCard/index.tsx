@@ -14,7 +14,7 @@ export default function AuthorCard({
   return (
     <Link
       href={{ pathname: `/authors/${author.id}` }}
-      className="w-[150px] rounded border p-1 md:w-[200px]"
+      className="w-full rounded border p-1 md:w-[200px]"
     >
       <AspectRatio
         ratio={9 / 12}
@@ -26,7 +26,7 @@ export default function AuthorCard({
               author?.imageUrl ||
               "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg"
             }
-            className="rounded object-cover"
+            className="w-full rounded object-cover"
             width={200}
             height={300}
             loading="lazy"
