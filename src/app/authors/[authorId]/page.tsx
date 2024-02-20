@@ -62,7 +62,7 @@ export default async function AuthorPage({
           <p className="text-2xl font-bold">Books</p>
           <div className="flex h-full w-full">
             {author?.books.length > 0 ? (
-              <div className="flex w-max flex-row flex-wrap gap-8">
+              <div className="grid grid-cols-2 justify-between gap-6 md:flex md:flex-row md:flex-wrap md:justify-start">
                 {author?.books?.map((book) => (
                   <BookCard key={book.id} book={book} />
                 ))}
