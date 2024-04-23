@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "./og-image.png",
-        width: 1280,
-        height: 720,
+        width: 1200,
+        height: 630,
         alt: "Literature Archive",
       },
     ],
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     creatorId: "@Mushegh_M",
     images: [
       {
-        url: "./og-image.png",
-        width: 1280,
-        height: 720,
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
         alt: "Literature Archive",
       },
     ],
