@@ -8,7 +8,13 @@ import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
-export default function Books() {
+export default function Books({
+  likedBooks,
+  dbUserId,
+}: {
+  likedBooks?: number[];
+  dbUserId: number;
+}) {
   const { register, watch } = useForm({ defaultValues: { search: "" } });
   const {
     data: infiniteData,
@@ -61,10 +67,25 @@ export default function Books() {
             <React.Fragment key={index}>
               {page.map((book, i) => {
                 if (i === page.length - 1) {
-                  return <BookCard key={book.id} ref={ref} book={book} />;
+                  return (
+                    <BookCard
+                      key={book.id}
+                      ref={ref}
+                      book={book}
+                      isLiked={likedBooks?.includes(book.id)}
+                      dbUserId={dbUserId}
+                    />
+                  );
                 }
 
-                return <BookCard key={book.id} book={book} />;
+                return (
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    isLiked={likedBooks?.includes(book.id)}
+                    dbUserId={dbUserId}
+                  />
+                );
               })}
             </React.Fragment>
           ))}

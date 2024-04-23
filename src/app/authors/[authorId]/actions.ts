@@ -9,3 +9,19 @@ export async function getAuthor(authorId: number) {
   });
   return res[0];
 }
+export async function getBooksByUserLikedBooks({ userId }: { userId: number }) {
+  const res = await db.query.userLikedBooks.findMany({
+    columns: {
+      bookId: true,
+    },
+    where: (userLikedBooks, { eq }) => eq(userLikedBooks.userId, userId),
+  });
+  return res;
+}
+
+export async function getDbUser(userId: string) {
+  const res = await db.query.user.findFirst({
+    where: (users, { eq }) => eq(users.sub, userId),
+  });
+  return res;
+}

@@ -1,15 +1,26 @@
 import BookCard from "@/components/BookCard";
-import { getAuthor } from "./actions";
+import { getAuthor, getBooksByUserLikedBooks, getDbUser } from "./actions";
 import { Minus } from "lucide-react";
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function AuthorPage({
   params,
 }: {
   params: { authorId: string };
 }) {
+  let booksUserLiked;
   const authorId = +params.authorId;
   const author = await getAuthor(authorId);
+  const { userId } = auth();
+  const dbUser = await getDbUser(userId!);
+  if (dbUser) {
+    booksUserLiked = await getBooksByUserLikedBooks({
+      userId: dbUser?.id!,
+    });
+  }
+  const likedBooks = booksUserLiked?.map((book) => book.bookId);
+
   return (
     <div className="flex w-full flex-col items-start justify-between overflow-hidden pb-10 lg:flex-row lg:space-x-10">
       <div className="flex w-full grow-[1] flex-col lg:w-auto">
@@ -21,7 +32,8 @@ export default async function AuthorPage({
             }
             className="h-full w-full object-cover object-top"
             fill
-            quality={50}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={30}
             alt="author"
           />
         </div>
@@ -64,7 +76,12 @@ export default async function AuthorPage({
             {author?.books.length > 0 ? (
               <div className="grid grid-cols-2 justify-between gap-6 md:flex md:flex-row md:flex-wrap md:justify-start">
                 {author?.books?.map((book) => (
-                  <BookCard key={book.id} book={book} />
+                  <BookCard
+                    key={book.id}
+                    book={book}
+                    dbUserId={dbUser?.id!}
+                    isLiked={likedBooks?.includes(book.id)}
+                  />
                 ))}
               </div>
             ) : (

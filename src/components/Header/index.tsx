@@ -11,8 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { SignInButton, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 
 export default function Header() {
+  const { isSignedIn } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const [selected, setSelected] = useState(pathname.split("/")[1]);
@@ -89,8 +91,59 @@ export default function Header() {
         >
           Books
         </Link>
+        {isSignedIn && (
+          <Link
+            href="/profile"
+            className={cn(
+              "border-b-foreground text-black hover:border-b dark:text-white",
+              selected === "profile" && "border-b"
+            )}
+            onClick={() => setSelected("profile")}
+          >
+            My Collection
+          </Link>
+        )}
       </div>
       <div className="flex flex-row items-center space-x-4 lg:flex">
+        {isSignedIn && (
+          <UserButton
+            appearance={{
+              elements: {
+                userButtonPopoverMain: "dark:bg-slate-800 dark:text-white",
+                button: "dark:text-white",
+              },
+            }}
+            userProfileProps={{
+              appearance: {
+                elements: {
+                  scrollBox: "dark:bg-slate-800",
+                  page: "dark:text-white",
+                  navbarButtons: "dark:text-white",
+                  navbarButton:
+                    "dark:hover:bg-slate-600 dark:focus:bg-slate-800 dark:focus:text-white dark:text-black dark:hover:text-white",
+                  formFieldLabel: "dark:text-white",
+                  headerTitle: "dark:text-white",
+                  profileSection: "dark:bg-slate-800",
+                  button: "dark:text-white",
+                  menuList: "dark:bg-slate-700 dark:hover:bg-slate-600",
+                  navbarMobileMenuRow: "dark:bg-slate-600",
+                  navbarMobileMenuButton: "dark:text-black",
+                  navbarMobileMenuButtonIcon: "dark:text-white",
+                  badge: "dark:text-white border dark:border-white",
+                  userPreview: "dark:text-white",
+                  profileSectionPrimaryButton: "dark:hover:bg-slate-600",
+                  menuButton: "dark:hover:bg-slate-600",
+                  cardBox: "dark:bg-slate-600",
+                  actionCard: "dark:bg-slate-700",
+                  formButtonReset: "dark:hover:bg-slate-600",
+                  avatarImageActionsUpload: "dark:hover:bg-slate-600",
+                  avatarImageActionsRemove: "dark:hover:bg-slate-600",
+                },
+              },
+            }}
+            afterSignOutUrl="/"
+          />
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger className="lg:hidden">
             <Menu />
@@ -102,12 +155,19 @@ export default function Header() {
             <DropdownMenuItem onClick={() => router.push("/authors")}>
               Authors
             </DropdownMenuItem>
-
             <DropdownMenuItem onClick={() => router.push("/books")}>
               Books
             </DropdownMenuItem>
+            {isSignedIn && (
+              <DropdownMenuItem onClick={() => router.push("/profile")}>
+                My Collection
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
         <ModeToggle />
       </div>
     </div>
