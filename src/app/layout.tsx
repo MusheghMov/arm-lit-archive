@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: "Literature Archive",
     images: [
       {
-        url: "/og-image.png",
+        url: "./og-image.png",
         width: 1280,
         height: 720,
         alt: "Literature Archive",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     creatorId: "@Mushegh_M",
     images: [
       {
-        url: "/og-image.png",
+        url: "./og-image.png",
         width: 1280,
         height: 720,
         alt: "Literature Archive",
