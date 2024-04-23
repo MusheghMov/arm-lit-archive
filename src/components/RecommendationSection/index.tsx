@@ -17,10 +17,14 @@ export default function RecommendationSection({
   books,
   title,
   href,
+  dbUserId,
+  likedBooks,
 }: {
   books: z.infer<typeof BookSelectType>[];
   title: string;
   href: string;
+  dbUserId?: number;
+  likedBooks?: number[];
 }) {
   return (
     <div className="flex w-full flex-col space-y-3">
@@ -31,14 +35,18 @@ export default function RecommendationSection({
         <span>{title}</span>
         <MoveRight />
       </Link>
-      <Carousel className="w-full">
+      <Carousel className="w-full lg:px-20">
         <CarouselContent className="-ml-1">
           {books.map((book) => (
             <CarouselItem
               key={book.id}
-              className="flex justify-center p-0 md:basis-1/3 lg:basis-1/5"
+              className="flex justify-center p-2 md:basis-1/3 lg:basis-auto"
             >
-              <BookCard book={book} />
+              <BookCard
+                book={book}
+                dbUserId={dbUserId}
+                isLiked={likedBooks?.includes(book.id)}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>

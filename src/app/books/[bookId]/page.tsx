@@ -1,19 +1,36 @@
-import { getBook } from "./actions";
+import { getBook, getBooksByUserLikedBooks, getDbUser } from "./actions";
 import { FileText } from "lucide-react";
 import Link from "next/link";
+import LikeButton from "./LikeButton";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function BookPage({
   params,
 }: {
   params: { bookId: string };
 }) {
-  const authorId = +params.bookId;
-  const book = await getBook(authorId);
+  let booksUserLiked;
+  let bookIds;
+  let isLiked = false;
+  const book = await getBook(+params.bookId);
+  const { userId } = auth();
+  const dbUser = await getDbUser(userId!);
+  if (dbUser) {
+    booksUserLiked = await getBooksByUserLikedBooks({
+      userId: dbUser?.id!,
+    });
+    bookIds = booksUserLiked?.map((book) => book.bookId);
+    isLiked = bookIds?.includes(+params.bookId);
+  }
+
   return (
     <div className="flex w-full flex-col items-center space-y-10 overflow-scroll py-10 lg:pt-8">
       <div className="flex w-full flex-col-reverse lg:flex-row">
         <div className="flex w-full flex-col items-center space-y-2 px-8">
-          <p className="text-center text-3xl font-bold">{book?.title}</p>
+          <div className="flex flex-row space-x-4">
+            <p className="text-center text-3xl font-bold">{book?.title}</p>
+            <LikeButton bookId={book.id} isLiked={isLiked} />
+          </div>
           <p className="text-center text-slate-500">{book?.titleTranslit}</p>
           <div className="flex flex-row space-x-1 text-slate-500">
             <Link
@@ -34,17 +51,6 @@ export default async function BookPage({
             </a>
           )}
         </div>
-        {/* <div className="relative h-full w-full overflow-hidden lg:flex-1 lg:rounded-bl-[100px]"> */}
-        {/*   <Image */}
-        {/*     src={ */}
-        {/*       book?.imageUrl || */}
-        {/*       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Tumanyan_%282%29.jpg/640px-Tumanyan_%282%29.jpg" */}
-        {/*     } */}
-        {/*     alt="book" */}
-        {/*     className="h-full w-full object-cover" */}
-        {/*     fill */}
-        {/*   /> */}
-        {/* </div> */}
       </div>
       <pre className="flex w-full items-center justify-center whitespace-pre-wrap px-4 lg:px-24">
         {book?.text}

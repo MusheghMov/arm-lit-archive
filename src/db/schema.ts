@@ -1,26 +1,10 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const user = sqliteTable("user", {
   id: integer("id").primaryKey(),
-  name: text("name"),
-  email: text("email"),
+  sub: text("sub").unique(),
 });
-
-export const authors = sqliteTable("author", {
-  id: integer("id").primaryKey(),
-  name: text("name"),
-  imageUrl: text("imageUrl"),
-  color: text("color"),
-  bio: text("bio"),
-  birthDate: text("birthDate"),
-  deathDate: text("deathDate"),
-});
-
-export const authorRelations = relations(authors, ({ many }) => ({
-  books: many(books),
-}));
-
 export const books = sqliteTable("books", {
   id: integer("id").primaryKey(),
   title: text("title"),
@@ -35,9 +19,61 @@ export const books = sqliteTable("books", {
   authorId: integer("author_id"),
 });
 
-export const booksRelations = relations(books, ({ one }) => ({
+export const authors = sqliteTable("author", {
+  id: integer("id").primaryKey(),
+  name: text("name"),
+  imageUrl: text("imageUrl"),
+  color: text("color"),
+  bio: text("bio"),
+  birthDate: text("birthDate"),
+  deathDate: text("deathDate"),
+});
+
+export const userLikedBooks = sqliteTable("userLikedBooks", {
+  id: integer("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.id),
+  bookId: integer("book_id")
+    .notNull()
+    .references(() => books.id),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+export const userLikedAuthors = sqliteTable("userLikedAuthors", {
+  id: integer("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.id),
+  authorId: integer("author_id")
+    .notNull()
+    .references(() => authors.id),
+});
+
+export const userRelations = relations(user, ({ many }) => ({
+  userLikedBooks: many(userLikedBooks),
+  userLikedAuthors: many(userLikedAuthors),
+}));
+
+export const booksRelations = relations(books, ({ one, many }) => ({
   author: one(authors, {
     fields: [books.authorId],
     references: [authors.id],
+  }),
+  userLikedBooks: many(userLikedBooks),
+}));
+
+export const authorRelations = relations(authors, ({ many }) => ({
+  books: many(books),
+  userLikedAuthors: many(userLikedAuthors),
+}));
+
+export const userLikedBooksRelations = relations(userLikedBooks, ({ one }) => ({
+  user: one(user, {
+    fields: [userLikedBooks.userId],
+    references: [user.id],
+  }),
+  book: one(books, {
+    fields: [userLikedBooks.bookId],
+    references: [books.id],
   }),
 }));
