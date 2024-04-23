@@ -12,8 +12,39 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Armenian Literature Archive",
-  description: "Armenian Literature Archive",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://litarchive.com",
+    title: "Literature Archive",
+    description: "Literature Archive",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1280,
+        height: 720,
+        alt: "Literature Archive",
+      },
+    ],
+  },
+  twitter: {
+    title: "Literature Archive",
+    description: "Literature Archive",
+    card: "summary_large_image",
+    siteId: "https://twitter.com/Mushegh_M",
+    creator: "Mushegh Movsisyan",
+    creatorId: "@Mushegh_M",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1280,
+        height: 720,
+        alt: "Literature Archive",
+      },
+    ],
+  },
+  title: "Literature Archive",
+  description: "Literature Archive",
 };
 
 export default function RootLayout({
