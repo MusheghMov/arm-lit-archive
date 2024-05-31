@@ -91,7 +91,7 @@ export default function Books({
           ))}
         </div>
         {isFetchingNextPage && (
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center pt-4">
             <Loader2 className="animate-spin" />
           </div>
         )}
