@@ -54,7 +54,7 @@ export default function Header() {
           </g>
         </svg>
         <h2 className="hidden text-base font-bold sm:block">
-          Armenian Literature Archive
+          Literature Archive
         </h2>
       </Link>
 
