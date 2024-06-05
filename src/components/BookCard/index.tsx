@@ -1,24 +1,9 @@
 "use client";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { BookImage, Star } from "lucide-react";
+import { BookImage } from "lucide-react";
 import { forwardRef } from "react";
-import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import {
-  addBoooksToUserLikedBooks,
-  removeBoooksFromUserLikedBooks,
-} from "@/app/books/actions";
-import { SignInButton, useUser } from "@clerk/nextjs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
 import { useRouter } from "next/navigation";
+import FavoriteButton from "../FavoriteButton";
 
 export default forwardRef(function BookCard(
   {
@@ -44,37 +29,11 @@ export default forwardRef(function BookCard(
   },
   ref: any
 ) {
-  const { isSignedIn } = useUser();
   const router = useRouter();
-
-  const { mutate: onLikeBook } = useMutation({
-    mutationKey: ["addBoookToUserLikedBooks"],
-    mutationFn: async (bookId: number) => {
-      if (!dbUserId) {
-        return;
-      }
-      return await addBoooksToUserLikedBooks({
-        userId: dbUserId,
-        bookId: bookId,
-      });
-    },
-  });
-  const { mutate: onUnlikeBook } = useMutation({
-    mutationKey: ["removeBoookFromUserLikedBooks"],
-    mutationFn: async (bookId: number) => {
-      if (!dbUserId) {
-        return;
-      }
-      return removeBoooksFromUserLikedBooks({
-        userId: dbUserId,
-        bookId: bookId,
-      });
-    },
-  });
 
   return (
     <div
-      className="group flex h-min w-full max-w-[200px] cursor-pointer flex-col space-y-1 overflow-hidden rounded border p-2 md:w-44"
+      className="group flex !h-min w-full cursor-pointer flex-col space-y-1 justify-self-center overflow-hidden rounded-md border border-foreground/20 bg-card-foreground/5 hover:border-primary/60"
       ref={ref}
       onClick={() => {
         router.push(`/books/${book.id}`);
@@ -82,75 +41,31 @@ export default forwardRef(function BookCard(
     >
       <div className="overflow-hidden rounded">
         <AspectRatio
-          ratio={12 / 12}
-          className="relative transition-all group-hover:scale-125"
+          ratio={5 / 4}
+          className="relative flex items-center justify-center transition-all group-hover:scale-125"
         >
-          <BookImage className="h-full w-full text-slate-300" />
+          <BookImage size={100} className="stroke-foreground text-slate-300" />
         </AspectRatio>
       </div>
 
-      {isSignedIn ? (
-        <Button
-          className="h-fit w-fit p-2"
-          variant="outline"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (isLiked) {
-              onUnlikeBook(book.id);
-            } else {
-              onLikeBook(book.id);
-            }
-          }}
-        >
-          <Star
-            size={16}
-            className={cn(isLiked && "fill-black dark:fill-white")}
+      <div className="flex w-full flex-col items-start justify-between gap-3 px-2 pb-2">
+        <div className="flex w-full flex-row items-center justify-between gap-2">
+          <div className="flex flex-col items-start justify-center">
+            <p className="line-clamp-1 text-sm font-bold uppercase">
+              {book.title}
+            </p>
+            <p className="line-clamp-1 text-sm font-light uppercase text-gray-400">
+              {book.titleTranslit}
+            </p>
+          </div>
+          <FavoriteButton
+            bookId={book.id}
+            isLiked={isLiked}
+            dbUserId={dbUserId}
           />
-        </Button>
-      ) : (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              className="h-fit w-fit p-2"
-              variant="outline"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <Star
-                size={16}
-                className={cn(isLiked && "fill-black dark:fill-white")}
-              />
-            </Button>
-          </DialogTrigger>
-          <DialogContent
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            className="w-max"
-          >
-            <DialogHeader>
-              <DialogTitle>Want to save favorite books?</DialogTitle>
-              <DialogDescription>
-                Sing in to add books to your collection
-              </DialogDescription>
-            </DialogHeader>
-            <SignInButton>
-              <Button>Sign In</Button>
-            </SignInButton>
-          </DialogContent>
-        </Dialog>
-      )}
+        </div>
 
-      <div className="h-16 px-2 pt-1">
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold capitalize">
-          {book.title}
-        </p>
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize text-slate-500">
-          {book.titleTranslit}
-        </p>
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-slate-500">
+        <p className="line-clamp-1 text-sm font-bold uppercase">
           {book.authorName || "Author"}
         </p>
       </div>

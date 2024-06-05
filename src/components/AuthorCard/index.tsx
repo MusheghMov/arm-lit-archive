@@ -14,7 +14,7 @@ export default function AuthorCard({
   return (
     <Link
       href={{ pathname: `/authors/${author.id}` }}
-      className="w-full rounded border p-1 md:w-[200px]"
+      className="w-full rounded border bg-card p-1 hover:border-primary/60"
     >
       <AspectRatio
         ratio={9 / 12}
@@ -34,7 +34,7 @@ export default function AuthorCard({
             alt="Author's image"
           />
         </div>
-        <div className="z-10 flex h-full flex-1 flex-col items-center justify-center bg-background p-2 text-xs font-bold uppercase">
+        <div className="z-10 flex h-full flex-1 flex-col items-center justify-center p-2 text-xs font-bold uppercase">
           <p className="text-center">{author?.name}</p>
           <p>
             {author?.deathDate

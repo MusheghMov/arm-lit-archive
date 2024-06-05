@@ -1,8 +1,8 @@
 import { getBook, getBooksByUserLikedBooks, getDbUser } from "./actions";
 import { FileText } from "lucide-react";
 import Link from "next/link";
-import LikeButton from "./LikeButton";
 import { auth } from "@clerk/nextjs/server";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default async function BookPage({
   params,
@@ -24,12 +24,16 @@ export default async function BookPage({
   }
 
   return (
-    <div className="flex w-full flex-col items-center space-y-10 overflow-scroll py-10 lg:pt-8">
+    <div className="flex w-full flex-col items-center space-y-10 overflow-scroll bg-background py-10 lg:pt-8">
       <div className="flex w-full flex-col-reverse lg:flex-row">
         <div className="flex w-full flex-col items-center space-y-2 px-8">
           <div className="flex flex-row space-x-4">
             <p className="text-center text-3xl font-bold">{book?.title}</p>
-            <LikeButton bookId={book.id} isLiked={isLiked} />
+            <FavoriteButton
+              isLiked={isLiked}
+              bookId={book.id}
+              dbUserId={dbUser?.id}
+            />
           </div>
           <p className="text-center text-slate-500">{book?.titleTranslit}</p>
           <div className="flex flex-row space-x-1 text-slate-500">
@@ -52,8 +56,10 @@ export default async function BookPage({
           )}
         </div>
       </div>
-      <pre className="flex w-full items-center justify-center whitespace-pre-wrap px-4 lg:px-24">
-        {book?.text}
+      <pre className="w-full bg-transparent">
+        <article className="prose flex w-full min-w-full items-center justify-center whitespace-pre-wrap px-5 text-foreground/80 lg:prose-xl lg:px-24">
+          {book?.text}
+        </article>
       </pre>
     </div>
   );

@@ -10,9 +10,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ClerkProvider>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="blue"
         enableSystem
         disableTransitionOnChange
+        themes={["violet", "blue", "green", "zink", "light", "slate"]}
       >
         <QueryClientProvider client={queryClient}>
           {children}

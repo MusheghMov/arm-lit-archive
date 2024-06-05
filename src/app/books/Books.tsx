@@ -53,7 +53,7 @@ export default function Books({
     <div className="flex w-full flex-col gap-6">
       <Input
         {...register("search")}
-        className="max-w-[400px]"
+        className="w-full sm:w-[400px]"
         placeholder="Search for book by title or author name"
       />
       {isLoading && (
@@ -62,7 +62,7 @@ export default function Books({
         </div>
       )}
       <div className="flex flex-row flex-wrap">
-        <div className="grid grid-cols-2 justify-between gap-6 md:flex md:flex-row md:flex-wrap md:justify-start">
+        <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
           {infiniteData?.pages.map((page, index) => (
             <React.Fragment key={index}>
               {page.map((book, i) => {
@@ -91,7 +91,7 @@ export default function Books({
           ))}
         </div>
         {isFetchingNextPage && (
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center pt-4">
             <Loader2 className="animate-spin" />
           </div>
         )}
