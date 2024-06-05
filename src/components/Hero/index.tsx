@@ -62,7 +62,7 @@ export default function Hero() {
               </div>
             </div>
           </CarouselItem>
-          <CarouselItem className="flex h-min items-center justify-center">
+          <CarouselItem className="flex h-full items-center justify-center">
             <div className="relative h-full bg-transparent md:max-w-[80%]">
               <div className="relative z-20 flex h-full w-full flex-col justify-center gap-40 bg-gray-500/30 text-foreground text-white md:bg-transparent md:mix-blend-normal">
                 <p className="translate-x-10 text-lg font-light italic text-foreground">
@@ -97,7 +97,7 @@ export default function Hero() {
               </div>
             </div>
           </CarouselItem>
-          <CarouselItem className="flex h-min items-center justify-center">
+          <CarouselItem className="flex h-full items-center justify-center">
             <div className="relative h-full bg-transparent md:max-w-[80%]">
               <div className="relative z-20 flex h-full w-full flex-col justify-center gap-40 bg-gray-500/30 text-foreground text-white md:bg-transparent md:mix-blend-normal">
                 <p className="translate-x-10 text-lg font-light italic text-foreground">
