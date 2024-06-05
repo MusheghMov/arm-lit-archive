@@ -1,15 +1,6 @@
 "use client";
-import { SignInButton, useAuth } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Star } from "lucide-react";
-import React from "react";
-import {
-  addBoooksToUserLikedBooks,
-  getDbUser,
-  removeBoooksFromUserLikedBooks,
-} from "./actions";
-import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,67 +8,87 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../ui/dialog";
+import { cn } from "@/lib/utils";
+import { SignInButton, useUser } from "@clerk/nextjs";
+import { useMutation } from "@tanstack/react-query";
+import {
+  addBoooksToUserLikedBooks,
+  removeBoooksFromUserLikedBooks,
+} from "@/app/books/actions";
 
-export default function LikeButton({
-  bookId,
+export default function FavoriteButton({
   isLiked,
+  dbUserId,
+  bookId,
 }: {
+  isLiked?: boolean;
+  dbUserId?: number;
   bookId: number;
-  isLiked: boolean;
 }) {
-  const { userId, isSignedIn } = useAuth();
-  const { data: dbUser } = useQuery({
-    queryKey: ["dbUser", userId!],
-    queryFn: () => {
-      return getDbUser(userId!);
-    },
-  });
-
+  const { isSignedIn } = useUser();
   const { mutate: onLikeBook } = useMutation({
     mutationKey: ["addBoookToUserLikedBooks"],
-    mutationFn: (bookId: number) => {
-      return addBoooksToUserLikedBooks({ userId: dbUser?.id!, bookId: bookId });
-    },
-  });
-
-  const { mutate: onUnlikeBook } = useMutation({
-    mutationKey: ["removeBoookFromUserLikedBooks"],
-    mutationFn: (bookId: number) => {
-      return removeBoooksFromUserLikedBooks({
-        userId: dbUser?.id!,
+    mutationFn: async (bookId: number) => {
+      if (!dbUserId) {
+        return;
+      }
+      return await addBoooksToUserLikedBooks({
+        userId: dbUserId,
         bookId: bookId,
       });
     },
   });
-
+  const { mutate: onUnlikeBook } = useMutation({
+    mutationKey: ["removeBoookFromUserLikedBooks"],
+    mutationFn: async (bookId: number) => {
+      if (!dbUserId) {
+        return;
+      }
+      return removeBoooksFromUserLikedBooks({
+        userId: dbUserId,
+        bookId: bookId,
+      });
+    },
+  });
   return (
     <>
       {isSignedIn ? (
         <Button
-          onClick={() => {
+          className="h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30"
+          variant="outline"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             if (isLiked) {
               onUnlikeBook(bookId);
             } else {
               onLikeBook(bookId);
             }
           }}
-          size="icon"
-          variant="outline"
         >
-          <Star className={cn(isLiked && "fill-black dark:fill-white")} />
+          <Star
+            size={16}
+            className={cn("stroke-primary/70", isLiked && "fill-primary/70")}
+          />
         </Button>
       ) : (
         <Dialog>
           <DialogTrigger asChild>
             <Button
+              className="h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30"
               variant="outline"
-              size="icon"
               onClick={(e) => {
                 e.stopPropagation();
               }}
             >
-              <Star className={cn(isLiked && "fill-black dark:fill-white")} />
+              <Star
+                size={16}
+                className={cn(
+                  "stroke-primary/70",
+                  isLiked && "fill-primary/70"
+                )}
+              />
             </Button>
           </DialogTrigger>
           <DialogContent

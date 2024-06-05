@@ -19,10 +19,10 @@ export default function Header() {
   const pathname = usePathname();
   const [selected, setSelected] = useState(pathname.split("/")[1]);
   return (
-    <div className="sticky top-0 z-50 flex flex-row items-center justify-between bg-background px-4 py-4 lg:px-8">
+    <div className="sticky top-0 z-50 flex flex-row items-center justify-between border-b border-border bg-background/10 px-4 py-2 backdrop-blur lg:px-8">
       <Link href="/" className="flex flex-row items-center space-x-2">
         <svg
-          className="fill-black dark:fill-white"
+          className="fill-foreground"
           height="20px"
           width="20px"
           version="1.1"
@@ -58,13 +58,13 @@ export default function Header() {
         </h2>
       </Link>
 
-      <div className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] flex-row items-center space-x-10 lg:flex">
+      <div className="absolute left-[50%] top-[50%] hidden translate-x-[-50%] translate-y-[-50%] flex-row items-center space-x-10 text-foreground lg:flex">
         <Link
           href="/"
           prefetch
           className={cn(
-            "border-b-foreground text-black hover:border-b dark:text-white",
-            selected === "" && "border-b"
+            "border-primary/80 text-foreground/60 hover:text-foreground",
+            selected === "" && "text-foreground"
           )}
           onClick={() => setSelected("")}
         >
@@ -74,8 +74,8 @@ export default function Header() {
           href="/authors"
           prefetch
           className={cn(
-            "border-b-foreground text-black hover:border-b dark:text-white",
-            selected === "authors" && "border-b"
+            "border-primary/80 text-foreground/60 hover:text-foreground",
+            selected === "authors" && "text-foreground"
           )}
           onClick={() => setSelected("authors")}
         >
@@ -84,8 +84,8 @@ export default function Header() {
         <Link
           href="/books"
           className={cn(
-            "border-b-foreground text-black hover:border-b dark:text-white",
-            selected === "books" && "border-b"
+            "border-primary/80 text-foreground/60 hover:text-foreground",
+            selected === "books" && "text-foreground"
           )}
           onClick={() => setSelected("books")}
         >
@@ -95,7 +95,7 @@ export default function Header() {
           <Link
             href="/profile"
             className={cn(
-              "border-b-foreground text-black hover:border-b dark:text-white",
+              "border-b-foreground hover:border-b",
               selected === "profile" && "border-b"
             )}
             onClick={() => setSelected("profile")}

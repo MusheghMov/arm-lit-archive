@@ -27,7 +27,7 @@ export default function RecommendationSection({
   likedBooks?: number[];
 }) {
   return (
-    <div className="flex w-full flex-col space-y-3">
+    <div className="flex w-full flex-col gap-3">
       <Link
         href={href || ""}
         className="flex w-fit flex-row space-x-2 hover:underline lg:pl-16"
@@ -36,11 +36,11 @@ export default function RecommendationSection({
         <MoveRight />
       </Link>
       <Carousel className="w-full lg:px-20">
-        <CarouselContent className="-ml-1">
+        <CarouselContent className="-ml-1 flex h-min">
           {books.map((book) => (
             <CarouselItem
               key={book.id}
-              className="flex justify-center p-2 md:basis-1/3 lg:basis-auto"
+              className="flex basis-1/2 justify-center p-2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
             >
               <BookCard
                 book={book}
