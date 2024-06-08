@@ -2,6 +2,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import JotaiProvider from "./JotaiProvider";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         themes={["violet", "blue", "green", "zink", "light", "slate"]}
       >
         <QueryClientProvider client={queryClient}>
-          {children}
+          <JotaiProvider>{children}</JotaiProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </ClerkProvider>
