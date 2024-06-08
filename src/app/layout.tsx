@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Providers from "@/providers";
-import { cn } from "@/lib/utils";
 
 const poppins = Poppins({
   subsets: ["devanagari"],
@@ -54,8 +53,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="h-full">
-      <body className={cn(poppins.className, "h-full")}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={poppins.className}>
         <Providers>
           <div className="flex h-full w-screen flex-col bg-background font-sans">
             <Header />
