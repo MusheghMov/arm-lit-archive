@@ -95,7 +95,7 @@ export default function FavoriteButton({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className="w-max"
+            className="w-max p-8"
           >
             <DialogHeader>
               <DialogTitle>Want to save favorite books?</DialogTitle>
