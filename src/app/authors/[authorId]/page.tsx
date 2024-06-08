@@ -22,7 +22,7 @@ export default async function AuthorPage({
   const likedBooks = booksUserLiked?.map((book) => book.bookId);
 
   return (
-    <div className="flex w-full flex-col items-start justify-between overflow-hidden pb-10">
+    <div className="flex w-full flex-col items-start justify-between pb-10">
       <div className="flex w-full flex-col items-start justify-between overflow-hidden lg:flex-row lg:space-x-10">
         <div className="flex w-full grow-[1] flex-col lg:w-auto">
           <div className="relative min-h-[650px] min-w-[500px] overflow-hidden lg:rounded-br-[100px]">
