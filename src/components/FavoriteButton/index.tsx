@@ -59,7 +59,7 @@ export default function FavoriteButton({
     <>
       {isSignedIn ? (
         <Button
-          className="h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30"
+          className="group h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30 active:scale-125 active:border-primary"
           variant="outline"
           onClick={(e) => {
             e.preventDefault();
@@ -74,7 +74,7 @@ export default function FavoriteButton({
           <Star
             size={16}
             className={cn(
-              "stroke-primary/70",
+              "stroke-primary/70 group-active:stroke-primary",
               isBookLiked && "fill-primary/70"
             )}
           />
