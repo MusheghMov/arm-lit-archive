@@ -20,7 +20,7 @@ export default async function ProfilePage() {
       </div>
       <div className="flex flex-col space-y-4">
         <p className="font-bold capitalize">liked books</p>
-        <div className="flex w-full flex-row flex-wrap gap-6">
+        <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
           {books?.map((book) => (
             <BookCard
               key={book.book.id}

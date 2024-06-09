@@ -15,7 +15,7 @@ export default function BookContent({
   isLiked: boolean;
   dbUser: any;
 }) {
-  const [fontSize] = useAtom(storeFontSize)
+  const [fontSize] = useAtom(storeFontSize);
 
   return (
     <div className="flex w-full flex-col items-center space-y-10 overflow-scroll bg-background py-10 lg:pt-8">

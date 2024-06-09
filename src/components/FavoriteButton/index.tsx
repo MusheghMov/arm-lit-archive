@@ -16,6 +16,7 @@ import {
   addBoooksToUserLikedBooks,
   removeBoooksFromUserLikedBooks,
 } from "@/app/books/actions";
+import { useState } from "react";
 
 export default function FavoriteButton({
   isLiked,
@@ -27,12 +28,14 @@ export default function FavoriteButton({
   bookId: number;
 }) {
   const { isSignedIn } = useUser();
+  const [isBookLiked, setIsBookLiked] = useState(isLiked);
   const { mutate: onLikeBook } = useMutation({
     mutationKey: ["addBoookToUserLikedBooks"],
     mutationFn: async (bookId: number) => {
       if (!dbUserId) {
         return;
       }
+      setIsBookLiked(true);
       return await addBoooksToUserLikedBooks({
         userId: dbUserId,
         bookId: bookId,
@@ -45,6 +48,7 @@ export default function FavoriteButton({
       if (!dbUserId) {
         return;
       }
+      setIsBookLiked(false);
       return removeBoooksFromUserLikedBooks({
         userId: dbUserId,
         bookId: bookId,
@@ -55,12 +59,12 @@ export default function FavoriteButton({
     <>
       {isSignedIn ? (
         <Button
-          className="h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30"
+          className="group h-fit w-fit rounded-full border-primary/40 bg-background p-2 hover:bg-background/30 active:scale-125 active:border-primary"
           variant="outline"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (isLiked) {
+            if (isBookLiked) {
               onUnlikeBook(bookId);
             } else {
               onLikeBook(bookId);
@@ -69,7 +73,10 @@ export default function FavoriteButton({
         >
           <Star
             size={16}
-            className={cn("stroke-primary/70", isLiked && "fill-primary/70")}
+            className={cn(
+              "stroke-primary/70 group-active:stroke-primary",
+              isBookLiked && "fill-primary/70"
+            )}
           />
         </Button>
       ) : (
@@ -86,7 +93,7 @@ export default function FavoriteButton({
                 size={16}
                 className={cn(
                   "stroke-primary/70",
-                  isLiked && "fill-primary/70"
+                  isBookLiked && "fill-primary/70"
                 )}
               />
             </Button>
@@ -95,7 +102,7 @@ export default function FavoriteButton({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className="w-max"
+            className="w-max p-8"
           >
             <DialogHeader>
               <DialogTitle>Want to save favorite books?</DialogTitle>

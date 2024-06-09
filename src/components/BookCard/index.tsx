@@ -1,4 +1,5 @@
 "use client";
+
 import { AspectRatio } from "../ui/aspect-ratio";
 import { BookImage } from "lucide-react";
 import { forwardRef } from "react";
