@@ -95,8 +95,8 @@ export default function Header() {
           <Link
             href="/profile"
             className={cn(
-              "border-b-foreground hover:border-b",
-              selected === "profile" && "border-b"
+              "border-primary/80 text-foreground/60 hover:text-foreground",
+              selected === "profile" && "text-foreground"
             )}
             onClick={() => setSelected("profile")}
           >
