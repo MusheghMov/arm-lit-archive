@@ -18,7 +18,7 @@ export default function BookContent({
   const [fontSize] = useAtom(storeFontSize);
 
   return (
-    <div className="flex w-full flex-col items-center space-y-10 overflow-scroll bg-background py-10 lg:pt-8">
+    <div className="flex w-full flex-col items-center gap-y-10 overflow-scroll bg-background py-10 lg:pt-8">
       <div className="flex w-full flex-col-reverse lg:flex-row">
         <div className="flex w-full flex-col items-center space-y-2 px-8">
           <div className="flex flex-row space-x-4">
