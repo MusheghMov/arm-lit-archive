@@ -18,7 +18,7 @@ export default function Hero() {
       <Carousel
         plugins={[
           Autoplay({
-            delay: 400000,
+            delay: 4000,
           }),
         ]}
         className="h-min w-full [&>div]:h-min"
