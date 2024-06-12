@@ -48,14 +48,14 @@ export default function BookContent({
 
   return (
     <div className="flex w-full flex-col">
-      {userBookProgress?.lastCharacterIndex && (
+      {userBookProgress?.lastCharacterIndex ? (
         <Progress
           className="h-1 rounded-[0]"
           value={
             ((userBookProgress?.lastCharacterIndex - 1) / book.textLength) * 100
           }
         />
-      )}
+      ) : null}
       <div className="flex w-full flex-col items-center gap-y-10 bg-background py-10 lg:pt-8">
         <div className="flex w-full flex-col-reverse lg:flex-row">
           <div className="flex w-full flex-col items-center space-y-2 px-8">
@@ -77,7 +77,7 @@ export default function BookContent({
               </Link>
               <p>{book?.year! > 0 && `| ${book?.year}`}</p>
             </div>
-            {dbUser?.id && (
+            {dbUser?.id && (bookWithTextChunk?.text as string)?.length > 0 && (
               <Button
                 variant="link"
                 className=""
