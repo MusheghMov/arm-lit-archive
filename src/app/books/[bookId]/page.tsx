@@ -17,6 +17,7 @@ export default async function BookPage({
   let book;
   let dbUser;
   const bookId = +params.bookId;
+
   if (bookId) {
     book = await getBook(+params.bookId);
     const { userId } = auth();
