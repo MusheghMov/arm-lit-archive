@@ -114,22 +114,22 @@ export function ModeToggle() {
             </div>
             <div className="flex w-full flex-row justify-between gap-2">
               <Button
-                className="w-full"
+                className="w-full capitalize"
                 onClick={() => {
                   router.push(`/books/${prevBook?.id}`);
                 }}
                 disabled={!prevBook}
               >
-                previous
+                previous book
               </Button>
               <Button
-                className="w-full"
+                className="w-full capitalize"
                 onClick={() => {
                   router.push(`/books/${nextBook?.id}`);
                 }}
                 disabled={!nextBook}
               >
-                next
+                next book
               </Button>
             </div>
           </>

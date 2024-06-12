@@ -51,7 +51,7 @@ export default forwardRef(function BookCard(
 
       <div className="flex w-full flex-col items-start justify-between gap-3 px-2 pb-2">
         <div className="flex w-full flex-row items-center justify-between gap-2">
-          <div className="flex flex-col items-start justify-center">
+          <div className="flex min-w-0 flex-col items-start justify-center">
             <p className="line-clamp-1 text-sm font-bold uppercase">
               {book.title}
             </p>

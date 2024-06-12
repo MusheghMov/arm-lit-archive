@@ -39,6 +39,7 @@ export const userLikedBooks = sqliteTable("userLikedBooks", {
     .references(() => books.id),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
 export const userLikedAuthors = sqliteTable("userLikedAuthors", {
   id: integer("id").primaryKey(),
   userId: integer("user_id")
@@ -49,9 +50,22 @@ export const userLikedAuthors = sqliteTable("userLikedAuthors", {
     .references(() => authors.id),
 });
 
+export const userReadingProgress = sqliteTable("userReadingProgress", {
+  id: integer("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.id),
+  bookId: integer("book_id")
+    .notNull()
+    .references(() => books.id),
+  lastCharacterIndex: integer("last_character_index").notNull(),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const userRelations = relations(user, ({ many }) => ({
   userLikedBooks: many(userLikedBooks),
   userLikedAuthors: many(userLikedAuthors),
+  userReadingProgress: many(userReadingProgress),
 }));
 
 export const booksRelations = relations(books, ({ one, many }) => ({
@@ -60,6 +74,7 @@ export const booksRelations = relations(books, ({ one, many }) => ({
     references: [authors.id],
   }),
   userLikedBooks: many(userLikedBooks),
+  userReadingProgress: many(userReadingProgress),
 }));
 
 export const authorRelations = relations(authors, ({ many }) => ({
@@ -77,3 +92,17 @@ export const userLikedBooksRelations = relations(userLikedBooks, ({ one }) => ({
     references: [books.id],
   }),
 }));
+
+export const userReadingProgressRelations = relations(
+  userReadingProgress,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [userReadingProgress.userId],
+      references: [user.id],
+    }),
+    book: one(books, {
+      fields: [userReadingProgress.bookId],
+      references: [books.id],
+    }),
+  })
+);
