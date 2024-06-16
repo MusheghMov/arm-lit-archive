@@ -8,7 +8,7 @@ import { fontSize as storeFontSize } from "@/providers/JotaiProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getNextBook, getPreviousBook } from "./action";
+import { getNextBook, getPreviousBook } from "@/actions";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -116,7 +116,7 @@ export function ModeToggle() {
               <Button
                 className="w-full capitalize"
                 onClick={() => {
-                  router.push(`/books/${prevBook?.id}`);
+                  router.push(`/books/${prevBook?.id}?page=1`);
                 }}
                 disabled={!prevBook}
               >
@@ -125,7 +125,7 @@ export function ModeToggle() {
               <Button
                 className="w-full capitalize"
                 onClick={() => {
-                  router.push(`/books/${nextBook?.id}`);
+                  router.push(`/books/${nextBook?.id}?page=1`);
                 }}
                 disabled={!nextBook}
               >

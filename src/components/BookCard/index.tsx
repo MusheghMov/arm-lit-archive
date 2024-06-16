@@ -5,28 +5,15 @@ import { BookImage } from "lucide-react";
 import { forwardRef } from "react";
 import { useRouter } from "next/navigation";
 import FavoriteButton from "../FavoriteButton";
+import { Progress } from "../ui/progress";
 
 export default forwardRef(function BookCard(
   {
     book,
     isLiked,
-    dbUserId,
   }: {
-    book: {
-      id: number;
-      text: string | null;
-      imageUrl: string | null;
-      description: string | null;
-      title: string | null;
-      titleTranslit: string | null;
-      year: number | null;
-      sourceUrl: string | null;
-      fileUrl: string | null;
-      authorName: string | null;
-      authorId: number | null;
-    };
+    book: any;
     isLiked?: boolean;
-    dbUserId?: number;
   },
   ref: any
 ) {
@@ -34,10 +21,16 @@ export default forwardRef(function BookCard(
 
   return (
     <div
-      className="group flex !h-min w-full cursor-pointer flex-col space-y-1 justify-self-center overflow-hidden rounded-md border border-foreground/20 bg-card-foreground/5 hover:border-primary/60"
+      className="group relative flex !h-min w-full cursor-pointer flex-col space-y-1 justify-self-center overflow-hidden rounded-md border border-foreground/20 bg-card-foreground/5 hover:border-primary/60"
       ref={ref}
       onClick={() => {
-        router.push(`/books/${book.id}`);
+        if (book.userReadingProgress.length === 0) {
+          router.push(`/books/${book.id}?page=${1}`);
+        } else {
+          return router.push(
+            `/books/${book.id}?page=${book?.userReadingProgress[0].lastPageNumber}`
+          );
+        }
       }}
     >
       <div className="overflow-hidden rounded">
@@ -59,17 +52,22 @@ export default forwardRef(function BookCard(
               {book.titleTranslit}
             </p>
           </div>
-          <FavoriteButton
-            bookId={book.id}
-            isLiked={isLiked}
-            dbUserId={dbUserId}
-          />
+          <FavoriteButton bookId={book.id} isLiked={isLiked} />
         </div>
 
         <p className="line-clamp-1 text-sm font-bold uppercase">
           {book.authorName || "Author"}
         </p>
       </div>
+      {book?.userReadingProgress?.length > 0 ? (
+        <Progress
+          className="absolute bottom-0 h-1 rounded-[0]"
+          value={
+            (book.userReadingProgress[0].lastPageNumber / book.bookPagesCount) *
+            100
+          }
+        />
+      ) : null}
     </div>
   );
 });

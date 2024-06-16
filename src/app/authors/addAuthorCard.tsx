@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Card,
   CardContent,
@@ -18,6 +19,7 @@ export const AddAuthorCard = () => {
   const authorImageRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+
   return (
     <Card className="sticky top-0 h-max w-[400px]">
       <CardHeader className="flex w-full flex-row justify-between">
