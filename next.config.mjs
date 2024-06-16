@@ -1,5 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/books/:id",
+        missing: [
+          {
+            type: "query",
+            key: "page",
+          },
+        ],
+        destination: "/books/:id?page=1",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

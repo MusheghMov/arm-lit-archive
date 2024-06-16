@@ -1,4 +1,5 @@
 "use client";
+
 import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -10,34 +11,35 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { cn } from "@/lib/utils";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import { useMutation } from "@tanstack/react-query";
-import {
-  addBoooksToUserLikedBooks,
-  removeBoooksFromUserLikedBooks,
-} from "@/app/books/actions";
 import { useState } from "react";
+import {
+  addBooksToUserLikedBooks,
+  removeBooksFromUserLikedBooks,
+} from "@/actions";
 
 export default function FavoriteButton({
   isLiked,
-  dbUserId,
   bookId,
 }: {
   isLiked?: boolean;
-  dbUserId?: number;
   bookId: number;
 }) {
   const { isSignedIn } = useUser();
+  const { userId } = useAuth();
   const [isBookLiked, setIsBookLiked] = useState(isLiked);
+
   const { mutate: onLikeBook } = useMutation({
     mutationKey: ["addBoookToUserLikedBooks"],
     mutationFn: async (bookId: number) => {
-      if (!dbUserId) {
+      if (!userId) {
         return;
       }
+
       setIsBookLiked(true);
-      return await addBoooksToUserLikedBooks({
-        userId: dbUserId,
+      return await addBooksToUserLikedBooks({
+        userId: userId,
         bookId: bookId,
       });
     },
@@ -45,16 +47,17 @@ export default function FavoriteButton({
   const { mutate: onUnlikeBook } = useMutation({
     mutationKey: ["removeBoookFromUserLikedBooks"],
     mutationFn: async (bookId: number) => {
-      if (!dbUserId) {
+      if (!userId) {
         return;
       }
       setIsBookLiked(false);
-      return removeBoooksFromUserLikedBooks({
-        userId: dbUserId,
+      return removeBooksFromUserLikedBooks({
+        userId: userId,
         bookId: bookId,
       });
     },
   });
+
   return (
     <>
       {isSignedIn ? (

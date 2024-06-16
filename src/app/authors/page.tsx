@@ -1,4 +1,4 @@
-import { getAuthors } from "./actions";
+import { getAuthors } from "@/actions";
 import AuthorCard from "@/components/AuthorCard";
 
 export default async function AuthorsPage() {

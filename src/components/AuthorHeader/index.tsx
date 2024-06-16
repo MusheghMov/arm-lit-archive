@@ -1,15 +1,10 @@
+import { getAuthor } from "@/actions";
 import { Minus } from "lucide-react";
 import Image from "next/image";
-import { getAuthor } from "@/actions";
 
-export default async function AuthorPage({
-  params,
-}: {
-  params: { authorId: string };
-}) {
-  const authorId = +params.authorId;
-
-  const author = await getAuthor({ authorId: authorId });
+export default function AuthorHeader({ authorId }: { authorId: number }) {
+  const authorData = getAuthor({ authorId: authorId });
+  const [autor] = Promise.all([authorData]);
 
   return (
     <div className="flex w-full flex-col items-start justify-between overflow-hidden lg:flex-row lg:space-x-10">
