@@ -254,35 +254,74 @@ const getBookTextWithChunk = unstable_cache(
       return result;
     }
 
-    if (
-      result?.userReadingProgress &&
-      result?.userReadingProgress?.length > 0
-    ) {
-      const userProgressId = result.userReadingProgress[0].id;
-      const lastCharacterIndex =
-        result.userReadingProgress[0].lastCharacterIndex;
+    if (result?.userReadingProgress) {
+      if (result?.userReadingProgress?.length === 0) {
+        await db.insert(userReadingProgress).values({
+          userId: dbUser?.id || 0,
+          bookId: bookId,
+          lastCharacterIndex:
+            (currentPageNumber - 1) * chunkSize +
+            (result?.text as string)?.length,
+        });
+      } else {
+        const userProgressId = result.userReadingProgress[0].id;
+        const lastCharacterIndex =
+          result.userReadingProgress[0].lastCharacterIndex;
 
-      if (lastCharacterIndex <= (currentPageNumber - 1) * chunkSize) {
-        await db
-          .update(userReadingProgress)
-          .set({
-            lastCharacterIndex:
-              (currentPageNumber - 1) * chunkSize +
-              (result?.text as string).length,
-          })
-          .where(eq(userReadingProgress.id, userProgressId));
+        if (lastCharacterIndex <= (currentPageNumber - 1) * chunkSize) {
+          await db
+            .update(userReadingProgress)
+            .set({
+              lastCharacterIndex:
+                (currentPageNumber - 1) * chunkSize +
+                (result?.text as string).length,
+            })
+            .where(eq(userReadingProgress.id, userProgressId));
+        }
       }
-    } else {
-      await db.insert(userReadingProgress).values({
-        userId: dbUser?.id || 0,
-        bookId: bookId,
-        lastCharacterIndex:
-          (currentPageNumber - 1) * chunkSize +
-          (result?.text as string)?.length,
-      });
     }
 
-    return result;
+    const resultAfterProgressUpdate = await db.query.books.findFirst({
+      where: eq(books.id, bookId),
+      with: {
+        userLikedBooks: {
+          where: dbUser?.id
+            ? eq(userLikedBooks.userId, dbUser?.id)
+            : eq(userLikedBooks.userId, 0),
+          extras: {
+            isLiked: sql<boolean>`true`.as("isLiked"),
+          },
+        },
+        userReadingProgress: {
+          where: (userReadingProgress, { eq }) =>
+            dbUser?.id
+              ? eq(userReadingProgress.userId, dbUser?.id)
+              : eq(userReadingProgress.userId, 0),
+          extras: {
+            lastPageNumber:
+              sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
+                "lastPageNumber"
+              ),
+          },
+        },
+      },
+      extras: {
+        text: sql<string>`substr(${books.text}, ${(currentPageNumber - 1) * chunkSize}, ${chunkSize})`.as(
+          "text"
+        ),
+        textLength: sql<number>`length(${books.text})`.as("textLength"),
+        bookPagesCount:
+          sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
+            "bookPagesCount"
+          ),
+      },
+    });
+
+    revalidateTag("bookTextWithChunk");
+    revalidateTag("books");
+    revalidateTag("book");
+
+    return resultAfterProgressUpdate;
   },
   ["bookTextWithChunk"],
   {
