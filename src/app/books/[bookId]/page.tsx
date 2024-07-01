@@ -1,6 +1,39 @@
 import { getBookTextWithChunk } from "@/actions";
 import BookContent from "@/components/BookContent";
 import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
+
+type Props = {
+  params: { bookId: string };
+  searchParams: { page: string };
+};
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
+  const { userId } = auth();
+  const book = await getBookTextWithChunk({
+    bookId: +params.bookId,
+    currentPageNumber: +searchParams.page,
+    chunkSize: 4000,
+    userId: userId!,
+  });
+  return {
+    title: book?.title,
+    openGraph: {
+      title: book?.title as string,
+      description: (book?.text as string).substring(0, 150),
+      url: "https://litarchive.com/books/" + params.bookId,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: book?.title as string,
+      description: (book?.text as string).substring(0, 150),
+    },
+  };
+}
 
 export default async function BookPage({
   params,
