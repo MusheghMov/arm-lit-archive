@@ -1,7 +1,32 @@
 import { Minus } from "lucide-react";
 import Image from "next/image";
 import { getAuthor } from "@/actions";
+import type { Metadata } from "next";
 
+type Props = {
+  params: { authorId: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const author = await getAuthor({ authorId: +params.authorId });
+
+  return {
+    title: author?.name,
+    openGraph: {
+      title: author?.name as string,
+      description: author?.bio?.substring(0, 150),
+      url: "https://litarchive.com/authors/" + params.authorId,
+      type: "website",
+      images: [author?.imageUrl as string],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: author?.name as string,
+      description: author?.bio?.substring(0, 150),
+      images: [author?.imageUrl as string],
+    },
+  };
+}
 export default async function AuthorPage({
   params,
 }: {
