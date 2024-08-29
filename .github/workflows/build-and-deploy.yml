@@ -23,7 +23,7 @@ jobs:
         run: pnpm install
 
       - name: Install vercel
-        run: pnpm install -g vercel@latest
+        run: pnpm install vercel@latest
 
       - name: Build
         run: vercel build
