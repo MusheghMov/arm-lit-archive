@@ -25,6 +25,9 @@ jobs:
       - name: Install vercel
         run: pnpm install vercel@latest
 
+      - name: Vercel pull
+        run: vercel pull --yes
+
       - name: Build
         run: vercel build
 
@@ -37,4 +40,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync ./next s3://build-bucket-mm
+          aws s3 sync ./.next s3://build-bucket-mm
