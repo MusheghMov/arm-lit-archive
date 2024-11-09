@@ -6,11 +6,12 @@ import React from "react";
 export default async function AuthorBooks({
   params,
 }: {
-  params: { authorId: string };
+  params: Promise<{ authorId: string }>;
 }) {
-  const { userId } = auth();
+  const { userId } = await auth();
+  const { authorId } = await params;
   const booksByAuthor = await getBooks({
-    authorId: +params.authorId,
+    authorId: +authorId,
     userId: userId!,
     chunkSize: 4000,
   });

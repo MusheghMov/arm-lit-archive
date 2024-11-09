@@ -26,7 +26,7 @@ export default function Header() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="sticky top-0 z-50 grid w-full shrink-0 grow-0 self-center overflow-hidden rounded-[30px] bg-background/35 backdrop-blur-lg lg:inset-0 lg:top-3 lg:m-auto lg:w-fit lg:border lg:border-border/65">
+    <div className="sticky top-0 z-50 grid w-full shrink-0 grow-0 self-center overflow-hidden rounded-[30px] rounded-none border-b border-border/65 bg-background/35 backdrop-blur-lg lg:inset-0 lg:top-3 lg:m-auto lg:w-fit lg:rounded-[30px] lg:border">
       <div className="flex w-full flex-row items-center justify-between gap-14 px-4 py-2 md:justify-between lg:justify-center lg:px-2 lg:py-1">
         <Link href="/" className="flex flex-row items-center gap-2 pl-3">
           <svg
