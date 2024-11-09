@@ -1,12 +1,16 @@
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
 import * as schema from "./schema";
 
-const client = createClient({
-  url: process.env.DATABASE_URL!,
-  authToken: process.env.DATABASE_AUTH_TOKEN,
-});
+import { config } from "dotenv";
+import { drizzle } from "drizzle-orm/libsql";
 
-const db = drizzle(client, { schema });
+config({ path: ".env.local" });
+
+export const db = drizzle({
+  connection: {
+    url: process.env.DATABASE_URL!,
+    authToken: process.env.DATABASE_AUTH_TOKEN,
+  },
+  schema,
+});
 
 export default db;

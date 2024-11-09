@@ -3,19 +3,20 @@ import Image from "next/image";
 import { getAuthor } from "@/actions";
 import type { Metadata } from "next";
 
-type Props = {
-  params: { authorId: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const author = await getAuthor({ authorId: +params.authorId });
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ authorId: string }>;
+}): Promise<Metadata> {
+  const { authorId } = await params;
+  const author = await getAuthor({ authorId: +authorId });
 
   return {
     title: author?.name,
     openGraph: {
       title: author?.name as string,
       description: author?.bio?.substring(0, 150),
-      url: "https://litarchive.com/authors/" + params.authorId,
+      url: "https://litarchive.com/authors/" + authorId,
       type: "website",
       images: [author?.imageUrl as string],
     },
@@ -30,11 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AuthorPage({
   params,
 }: {
-  params: { authorId: string };
+  params: Promise<{ authorId: string }>;
 }) {
-  const authorId = +params.authorId;
+  const { authorId } = await params;
 
-  const author = await getAuthor({ authorId: authorId });
+  const author = await getAuthor({ authorId: +authorId });
 
   return (
     <div className="flex w-full flex-col items-start justify-between overflow-hidden lg:flex-row lg:space-x-10">
@@ -81,9 +82,9 @@ export default async function AuthorPage({
         </div>
       </div>
       <div className="flex w-full grow-[2] flex-col space-y-10 px-8 py-4 lg:overflow-hidden lg:px-10">
-        <div className="flex max-w-[900px] flex-col space-y-2">
+        <div className="flex flex-col gap-4 lg:max-w-[70%]">
           <p className="text-4xl font-medium capitalize">{author?.name}</p>
-          <p className="text-gray-500">{author?.bio}</p>
+          <p className="text-foreground/65">{author?.bio}</p>
         </div>
       </div>
     </div>

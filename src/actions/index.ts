@@ -9,7 +9,6 @@ import {
 } from "@/db/schema";
 import { and, eq, sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
-import { revalidateTag, unstable_cache } from "next/cache";
 import { z } from "zod";
 const schemaForCreateBook = createInsertSchema(books);
 const schemaForCreateAuthor = createInsertSchema(authors);
@@ -21,35 +20,31 @@ async function getDbUser(userId: string) {
   return res;
 }
 
-const getBook = unstable_cache(
-  async (bookId: number) => {
-    const res = await db.query.books.findFirst({
-      where: (books, { eq }) => eq(books.id, bookId),
-      with: {
-        author: true,
-      },
-      columns: {
-        id: true,
-        title: true,
-        titleTranslit: true,
-        authorId: true,
-      },
-      extras: {
-        textLength: sql<number>`length(${books.text})`.as("textLength"),
-      },
-    });
-    return res;
-  },
-  ["book"],
-  { tags: ["book"] }
-);
+const getBook = async (bookId: number) => {
+  const res = await db.query.books.findFirst({
+    where: (books, { eq }) => eq(books.id, bookId),
+    with: {
+      author: true,
+    },
+    columns: {
+      id: true,
+      title: true,
+      titleTranslit: true,
+      authorId: true,
+    },
+    extras: {
+      textLength: sql<number>`length(${books.text})`.as("textLength"),
+    },
+  });
+  return res;
+};
 
 async function getNextBook(currentBookId: number) {
   const nextBook = await db.query.books.findFirst({
     where: (books, { gt }) => gt(books.id, currentBookId),
   });
 
-  return nextBook;
+  return nextBook || null;
 }
 
 async function getPreviousBook(currentBookId: number) {
@@ -61,273 +56,263 @@ async function getPreviousBook(currentBookId: number) {
   return previousBook;
 }
 
-const getBooks = unstable_cache(
-  async ({
-    offset,
-    limit,
-    authorId,
-    search = "",
-    userId = "",
-    chunkSize,
-  }: {
-    offset?: number;
-    limit?: number;
-    authorId?: number;
-    search?: string;
-    userId?: string;
-    chunkSize: number;
-  }) => {
-    const dbUser = await getDbUser(userId);
+const getBooks = async ({
+  offset,
+  limit,
+  authorId,
+  search = "",
+  userId = "",
+  chunkSize,
+}: {
+  offset?: number;
+  limit?: number;
+  authorId?: number;
+  search?: string;
+  userId?: string;
+  chunkSize: number;
+}) => {
+  const dbUser = await getDbUser(userId);
 
-    const res = await db.query.books.findMany({
-      where: (books, { or, and, eq, like }) =>
-        authorId
-          ? and(
-              like(books.title, `%${search}%`),
-              like(books.titleTranslit, `%${search}%`),
-              like(books.authorName, `%${search}%`),
-              eq(books.authorId, authorId)
-            )
-          : or(
-              like(books.title, `%${search}%`),
-              like(books.titleTranslit, `%${search}%`),
-              like(books.authorName, `%${search}%`)
-            ),
-      columns: {
-        id: true,
-        title: true,
-        titleTranslit: true,
-        authorId: true,
-        authorName: true,
-        description: true,
-      },
-      with: {
-        userLikedBooks: {
-          where: dbUser?.id
-            ? eq(userLikedBooks.userId, dbUser?.id)
-            : eq(userLikedBooks.userId, 0),
-          extras: {
-            isLiked: sql<boolean>`true`.as("isLiked"),
-          },
-        },
-        userReadingProgress: {
-          where: (userReadingProgress, { eq }) =>
-            dbUser?.id
-              ? eq(userReadingProgress.userId, dbUser?.id)
-              : eq(userReadingProgress.userId, 0),
-          extras: {
-            lastPageNumber:
-              sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
-                "lastPageNumber"
-              ),
-          },
-        },
-      },
-      extras: {
-        textLength: sql<number>`length(${books.text})`.as("textLength"),
-        bookPagesCount:
-          sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
-            "bookPagesCount"
+  const res = await db.query.books.findMany({
+    where: (books, { or, and, eq, like }) =>
+      authorId
+        ? and(
+            like(books.title, `%${search}%`),
+            like(books.titleTranslit, `%${search}%`),
+            like(books.authorName, `%${search}%`),
+            eq(books.authorId, authorId)
+          )
+        : or(
+            like(books.title, `%${search}%`),
+            like(books.titleTranslit, `%${search}%`),
+            like(books.authorName, `%${search}%`)
           ),
-      },
-
-      limit,
-      offset,
-      orderBy: (books, { desc }) => desc(books.id),
-    });
-    return res;
-  },
-  ["books"],
-  {
-    tags: ["books"],
-  }
-);
-
-const getBooksByUserLikedBooks = unstable_cache(
-  async ({ userId, chunkSize }: { userId: string; chunkSize: number }) => {
-    const dbUser = await getDbUser(userId);
-
-    const res = await db.query.userLikedBooks.findMany({
-      where: (userLikedBooks, { eq }) =>
-        dbUser?.id
+    columns: {
+      id: true,
+      title: true,
+      titleTranslit: true,
+      authorId: true,
+      authorName: true,
+      description: true,
+    },
+    with: {
+      userLikedBooks: {
+        where: dbUser?.id
           ? eq(userLikedBooks.userId, dbUser?.id)
           : eq(userLikedBooks.userId, 0),
-      with: {
-        book: {
-          columns: {
-            id: true,
-            title: true,
-            titleTranslit: true,
-            authorId: true,
-            authorName: true,
-            description: true,
-          },
-          extras: {
-            bookPagesCount:
-              sql<number>`ceil( length(${books.text} / ${chunkSize}) )`.as(
-                "bookPagesCount"
-              ),
-          },
-          with: {
-            userLikedBooks: {
-              where: (userLikedBooks, { eq }) =>
-                dbUser?.id
-                  ? eq(userLikedBooks.userId, dbUser?.id)
-                  : eq(userLikedBooks.userId, 0),
-              extras: {
-                isLiked: sql<boolean>`true`.as("isLiked"),
-              },
-            },
-            userReadingProgress: {
-              where: (userReadingProgress, { eq }) =>
-                dbUser?.id
-                  ? eq(userReadingProgress.userId, dbUser?.id)
-                  : eq(userReadingProgress.userId, 0),
-              extras: {
-                lastPageNumber:
-                  sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
-                    "lastPageNumber"
-                  ),
-              },
-            },
-          },
+        extras: {
+          isLiked: sql<boolean>`true`.as("isLiked"),
         },
       },
-      orderBy: (userLikedBooks, { desc }) => desc(userLikedBooks.createdAt),
-    });
-    return res;
-  },
-  ["booksUserLiked"],
-  { tags: ["booksUserLiked"] }
-);
-
-const getBookTextWithChunk = unstable_cache(
-  async ({
-    bookId,
-    currentPageNumber,
-    chunkSize,
-    userId = "",
-  }: {
-    bookId: number;
-    currentPageNumber: number;
-    chunkSize: number;
-    userId: string;
-  }) => {
-    const dbUser = await getDbUser(userId);
-    const result = await db.query.books.findFirst({
-      where: eq(books.id, bookId),
-      with: {
-        userLikedBooks: {
-          where: dbUser?.id
-            ? eq(userLikedBooks.userId, dbUser?.id)
-            : eq(userLikedBooks.userId, 0),
-          extras: {
-            isLiked: sql<boolean>`true`.as("isLiked"),
-          },
-        },
-        userReadingProgress: {
-          where: (userReadingProgress, { eq }) =>
-            dbUser?.id
-              ? eq(userReadingProgress.userId, dbUser?.id)
-              : eq(userReadingProgress.userId, 0),
-          extras: {
-            lastPageNumber:
-              sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
-                "lastPageNumber"
-              ),
-          },
+      userReadingProgress: {
+        where: (userReadingProgress, { eq }) =>
+          dbUser?.id
+            ? eq(userReadingProgress.userId, dbUser?.id)
+            : eq(userReadingProgress.userId, 0),
+        extras: {
+          lastPageNumber:
+            sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
+              "lastPageNumber"
+            ),
         },
       },
-      extras: {
-        text: sql<string>`substr(${books.text}, ${(currentPageNumber - 1) * chunkSize}, ${chunkSize})`.as(
-          "text"
+    },
+    extras: {
+      textLength: sql<number>`length(${books.text})`.as("textLength"),
+      bookPagesCount:
+        sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
+          "bookPagesCount"
         ),
-        textLength: sql<number>`length(${books.text})`.as("textLength"),
-        bookPagesCount:
-          sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
-            "bookPagesCount"
-          ),
+    },
+
+    limit,
+    offset,
+    orderBy: (books, { desc }) => desc(books.id),
+  });
+  return res;
+};
+
+const getBooksByUserLikedBooks = async ({
+  userId,
+  chunkSize,
+}: {
+  userId: string;
+  chunkSize: number;
+}) => {
+  const dbUser = await getDbUser(userId);
+
+  const res = await db.query.userLikedBooks.findMany({
+    where: (userLikedBooks, { eq }) =>
+      dbUser?.id
+        ? eq(userLikedBooks.userId, dbUser?.id)
+        : eq(userLikedBooks.userId, 0),
+    with: {
+      book: {
+        columns: {
+          id: true,
+          title: true,
+          titleTranslit: true,
+          authorId: true,
+          authorName: true,
+          description: true,
+        },
+        extras: {
+          bookPagesCount:
+            sql<number>`ceil( length(${books.text} / ${chunkSize}) )`.as(
+              "bookPagesCount"
+            ),
+        },
+        with: {
+          userLikedBooks: {
+            where: (userLikedBooks, { eq }) =>
+              dbUser?.id
+                ? eq(userLikedBooks.userId, dbUser?.id)
+                : eq(userLikedBooks.userId, 0),
+            extras: {
+              isLiked: sql<boolean>`true`.as("isLiked"),
+            },
+          },
+          userReadingProgress: {
+            where: (userReadingProgress, { eq }) =>
+              dbUser?.id
+                ? eq(userReadingProgress.userId, dbUser?.id)
+                : eq(userReadingProgress.userId, 0),
+            extras: {
+              lastPageNumber:
+                sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
+                  "lastPageNumber"
+                ),
+            },
+          },
+        },
       },
-    });
+    },
+    orderBy: (userLikedBooks, { desc }) => desc(userLikedBooks.createdAt),
+  });
+  return res;
+};
 
-    if (!dbUser?.id) {
-      return result;
-    }
+const getBookTextWithChunk = async ({
+  bookId,
+  currentPageNumber,
+  chunkSize,
+  userId = "",
+}: {
+  bookId: number;
+  currentPageNumber: number;
+  chunkSize: number;
+  userId: string;
+}) => {
+  const dbUser = await getDbUser(userId);
+  const result = await db.query.books.findFirst({
+    where: eq(books.id, bookId),
+    with: {
+      userLikedBooks: {
+        where: dbUser?.id
+          ? eq(userLikedBooks.userId, dbUser?.id)
+          : eq(userLikedBooks.userId, 0),
+        extras: {
+          isLiked: sql<boolean>`true`.as("isLiked"),
+        },
+      },
+      userReadingProgress: {
+        where: (userReadingProgress, { eq }) =>
+          dbUser?.id
+            ? eq(userReadingProgress.userId, dbUser?.id)
+            : eq(userReadingProgress.userId, 0),
+        extras: {
+          lastPageNumber:
+            sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
+              "lastPageNumber"
+            ),
+        },
+      },
+    },
+    extras: {
+      text: sql<string>`substr(${books.text}, ${(currentPageNumber - 1) * chunkSize}, ${chunkSize})`.as(
+        "text"
+      ),
+      textLength: sql<number>`length(${books.text})`.as("textLength"),
+      bookPagesCount:
+        sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
+          "bookPagesCount"
+        ),
+    },
+  });
 
-    if (result?.userReadingProgress) {
-      if (result?.userReadingProgress?.length === 0) {
-        await db.insert(userReadingProgress).values({
-          userId: dbUser?.id || 0,
-          bookId: bookId,
-          lastCharacterIndex:
-            (currentPageNumber - 1) * chunkSize +
-            (result?.text as string)?.length,
-        });
-      } else {
-        const userProgressId = result.userReadingProgress[0].id;
-        const lastCharacterIndex =
-          result.userReadingProgress[0].lastCharacterIndex;
+  if (!dbUser?.id) {
+    return result;
+  }
 
-        if (lastCharacterIndex <= (currentPageNumber - 1) * chunkSize) {
-          await db
-            .update(userReadingProgress)
-            .set({
-              lastCharacterIndex:
-                (currentPageNumber - 1) * chunkSize +
-                (result?.text as string).length,
-            })
-            .where(eq(userReadingProgress.id, userProgressId));
-        }
+  if (result?.userReadingProgress) {
+    if (result?.userReadingProgress?.length === 0) {
+      await db.insert(userReadingProgress).values({
+        userId: dbUser?.id || 0,
+        bookId: bookId,
+        lastCharacterIndex:
+          (currentPageNumber - 1) * chunkSize +
+          (result?.text as string)?.length,
+      });
+    } else {
+      const userProgressId = result.userReadingProgress[0].id;
+      const lastCharacterIndex =
+        result.userReadingProgress[0].lastCharacterIndex;
+
+      if (lastCharacterIndex <= (currentPageNumber - 1) * chunkSize) {
+        await db
+          .update(userReadingProgress)
+          .set({
+            lastCharacterIndex:
+              (currentPageNumber - 1) * chunkSize +
+              (result?.text as string).length,
+          })
+          .where(eq(userReadingProgress.id, userProgressId));
       }
     }
-
-    const resultAfterProgressUpdate = await db.query.books.findFirst({
-      where: eq(books.id, bookId),
-      with: {
-        userLikedBooks: {
-          where: dbUser?.id
-            ? eq(userLikedBooks.userId, dbUser?.id)
-            : eq(userLikedBooks.userId, 0),
-          extras: {
-            isLiked: sql<boolean>`true`.as("isLiked"),
-          },
-        },
-        userReadingProgress: {
-          where: (userReadingProgress, { eq }) =>
-            dbUser?.id
-              ? eq(userReadingProgress.userId, dbUser?.id)
-              : eq(userReadingProgress.userId, 0),
-          extras: {
-            lastPageNumber:
-              sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
-                "lastPageNumber"
-              ),
-          },
-        },
-      },
-      extras: {
-        text: sql<string>`substr(${books.text}, ${(currentPageNumber - 1) * chunkSize}, ${chunkSize})`.as(
-          "text"
-        ),
-        textLength: sql<number>`length(${books.text})`.as("textLength"),
-        bookPagesCount:
-          sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
-            "bookPagesCount"
-          ),
-      },
-    });
-
-    revalidateTag("bookTextWithChunk");
-    revalidateTag("books");
-    revalidateTag("book");
-
-    return resultAfterProgressUpdate;
-  },
-  ["bookTextWithChunk"],
-  {
-    tags: ["bookTextWithChunk"],
   }
-);
+
+  const resultAfterProgressUpdate = await db.query.books.findFirst({
+    where: eq(books.id, bookId),
+    with: {
+      userLikedBooks: {
+        where: dbUser?.id
+          ? eq(userLikedBooks.userId, dbUser?.id)
+          : eq(userLikedBooks.userId, 0),
+        extras: {
+          isLiked: sql<boolean>`true`.as("isLiked"),
+        },
+      },
+      userReadingProgress: {
+        where: (userReadingProgress, { eq }) =>
+          dbUser?.id
+            ? eq(userReadingProgress.userId, dbUser?.id)
+            : eq(userReadingProgress.userId, 0),
+        extras: {
+          lastPageNumber:
+            sql<number>`ceil( ${userReadingProgress.lastCharacterIndex} / ${chunkSize} )`.as(
+              "lastPageNumber"
+            ),
+        },
+      },
+    },
+    extras: {
+      text: sql<string>`substr(${books.text}, ${(currentPageNumber - 1) * chunkSize}, ${chunkSize})`.as(
+        "text"
+      ),
+      textLength: sql<number>`length(${books.text})`.as("textLength"),
+      bookPagesCount:
+        sql<number>`ceil( length(${books.text}) / ${chunkSize} )`.as(
+          "bookPagesCount"
+        ),
+    },
+  });
+
+  // revalidateTag("bookTextWithChunk");
+  // revalidateTag("books");
+  // revalidateTag("book");
+
+  return resultAfterProgressUpdate;
+};
 
 async function createBook(
   data: z.infer<typeof schemaForCreateBook>,
@@ -347,8 +332,8 @@ async function createBook(
     authorName: authorName,
     description: data.description,
   });
-  revalidateTag("books");
-  revalidateTag("bookTextWithChunk");
+  // revalidateTag("books");
+  // revalidateTag("bookTextWithChunk");
 
   return res;
 }
@@ -367,9 +352,9 @@ async function addBooksToUserLikedBooks({
     bookId: bookId,
   });
 
-  revalidateTag("bookTextWithChunk");
-  revalidateTag("books");
-  revalidateTag("booksUserLiked");
+  // revalidateTag("bookTextWithChunk");
+  // revalidateTag("books");
+  // revalidateTag("booksUserLiked");
   return res;
 }
 
@@ -391,14 +376,14 @@ async function removeBooksFromUserLikedBooks({
       )
     );
 
-  revalidateTag("bookTextWithChunk");
-  revalidateTag("books");
-  revalidateTag("booksUserLiked");
+  // revalidateTag("bookTextWithChunk");
+  // revalidateTag("books");
+  // revalidateTag("booksUserLiked");
 
   return res;
 }
 
-const getAuthor = unstable_cache(async ({ authorId }: { authorId: number }) => {
+const getAuthor = async ({ authorId }: { authorId: number }) => {
   const res = await db.query.authors.findFirst({
     where: (auhtors, { eq, and }) => and(eq(auhtors.id, authorId)),
     with: {
@@ -408,7 +393,7 @@ const getAuthor = unstable_cache(async ({ authorId }: { authorId: number }) => {
     },
   });
   return res;
-});
+};
 
 async function getAuthors({ search }: { search?: string } = {}) {
   const res = await db.query.authors.findMany({
@@ -430,7 +415,7 @@ async function createAuthor(
     birthDate: data.birthDate,
     deathDate: data.deathDate,
   });
-  revalidateTag("authors");
+  // revalidateTag("authors");
 
   return res;
 }

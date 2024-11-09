@@ -19,17 +19,8 @@ export default function BookContent({
   const [fontSize] = useAtom(storeFontSize);
 
   return (
-    <div className="flex w-full flex-col">
-      {book?.userReadingProgress[0]?.lastPageNumber ? (
-        <Progress
-          className="sticky top-[57px] h-1 rounded-[0]"
-          value={
-            (book.userReadingProgress[0].lastPageNumber / book.bookPagesCount) *
-            100
-          }
-        />
-      ) : null}
-      <div className="flex w-full flex-col items-center gap-y-10 bg-background py-10 lg:pt-8">
+    <div className="flex h-full w-full flex-col items-center">
+      <div className="flex h-full w-full max-w-[85%] flex-col items-center gap-y-10 bg-background py-10 lg:pt-8">
         <div className="flex w-full flex-col-reverse lg:flex-row">
           <div className="flex w-full flex-col items-center space-y-2 px-8">
             <div className="flex flex-row space-x-4">
@@ -61,24 +52,32 @@ export default function BookContent({
           </div>
         </div>
 
-        <pre className="w-full bg-transparent">
-          <article
-            style={{
-              fontSize: `${fontSize}px`,
-            }}
-            className="prose flex w-full min-w-full flex-col items-center justify-center gap-10 whitespace-pre-wrap px-5 text-foreground/80 lg:prose-xl lg:px-24"
-          >
-            {book.textLength > chunkSize ? (
-              <PageButtons
-                pagesCount={Math.ceil(book?.textLength / chunkSize)}
-                pageNumber={pageNumber}
-                bookId={book.id}
-              />
-            ) : null}
-            {book.text}
-          </article>
-        </pre>
+        <article
+          style={{
+            fontSize: `${fontSize}px`,
+          }}
+          className="prose flex w-full min-w-full flex-col items-center justify-center gap-0 whitespace-pre-wrap text-foreground/80 dark:prose-invert lg:prose-xl lg:px-24"
+        >
+          {book.textLength > chunkSize ? (
+            <PageButtons
+              pagesCount={Math.ceil(book?.textLength / chunkSize)}
+              pageNumber={pageNumber}
+              bookId={book.id}
+            />
+          ) : null}
+          {book.text}
+        </article>
       </div>
+
+      {book?.userReadingProgress[0]?.lastPageNumber ? (
+        <Progress
+          className="sticky bottom-0 h-1 rounded-[0]"
+          value={
+            (book.userReadingProgress[0].lastPageNumber / book.bookPagesCount) *
+            100
+          }
+        />
+      ) : null}
     </div>
   );
 }
