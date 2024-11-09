@@ -27,14 +27,12 @@ export default function Hero() {
           <CarouselItem className="flex h-full items-center justify-center">
             <div className="relative h-full bg-transparent lg:max-w-[80%]">
               <div className="relative z-20 flex h-full w-full flex-col justify-center gap-40 bg-gray-500/30 p-3 text-foreground text-white md:bg-transparent md:p-0 md:mix-blend-normal">
-                <div>
-                  <p className="translate-x-10 text-lg font-light italic text-foreground">
-                    - Authors
-                  </p>
-                  <p className="w-[60%] translate-x-10 text-3xl font-semibold text-foreground sm:text-7xl">
-                    Hovhannes Tumanyan: Armenia's national poet and writer
-                  </p>
-                </div>
+                <p className="translate-x-10 text-lg font-light italic text-foreground">
+                  - Authors
+                </p>
+                <p className="w-[60%] translate-x-10 text-3xl font-semibold text-foreground sm:text-7xl">
+                  Hovhannes Tumanyan: Armenia's national poet and writer
+                </p>
                 <div className="flex flex-col pl-6">
                   <p className="text-foreground">
                     Hovhannes Tumanyan biography and books

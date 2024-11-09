@@ -4,18 +4,20 @@ import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 
 type Props = {
-  params: { bookId: string };
-  searchParams: { page: string };
+  params: Promise<{ bookId: string }>;
+  searchParams: Promise<{ page: string }>;
 };
 
 export async function generateMetadata({
   params,
   searchParams,
 }: Props): Promise<Metadata> {
-  const { userId } = auth();
+  const { bookId } = await params;
+  const { page } = await searchParams;
+  const { userId } = await auth();
   const book = await getBookTextWithChunk({
-    bookId: +params.bookId,
-    currentPageNumber: +searchParams.page,
+    bookId: +bookId,
+    currentPageNumber: +page,
     chunkSize: 4000,
     userId: userId!,
   });
@@ -24,7 +26,7 @@ export async function generateMetadata({
     openGraph: {
       title: book?.title as string,
       description: (book?.text as string).substring(0, 150),
-      url: "https://litarchive.com/books/" + params.bookId,
+      url: "https://litarchive.com/books/" + bookId,
       type: "website",
     },
     twitter: {
@@ -35,20 +37,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function BookPage({
-  params,
-  searchParams,
-}: {
-  params: { bookId: string };
-  searchParams: { page: string };
-}) {
-  const { userId } = auth();
+export default async function BookPage({ params, searchParams }: Props) {
+  const { bookId } = await params;
+  const { page } = await searchParams;
+  const { userId } = await auth();
   let book = null;
 
   try {
     book = await getBookTextWithChunk({
-      bookId: +params.bookId,
-      currentPageNumber: +searchParams.page,
+      bookId: +bookId,
+      currentPageNumber: +page,
       chunkSize: 4000,
       userId: userId!,
     });
@@ -65,5 +63,5 @@ export default async function BookPage({
     );
   }
 
-  return <BookContent book={book} pageNumber={+searchParams.page} />;
+  return <BookContent book={book} pageNumber={+page} />;
 }

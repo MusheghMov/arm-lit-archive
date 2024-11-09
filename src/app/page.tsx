@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getBooks } from "@/actions";
 
 export default async function Home() {
-  const { userId } = auth();
+  const { userId } = await auth();
   const recentlyAddedBooks = await getBooks({
     limit: 10,
     chunkSize: 4000,

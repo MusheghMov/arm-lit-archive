@@ -5,9 +5,11 @@ import Header from "@/components/Header";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Providers from "@/providers";
+import { ClerkProvider } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 const poppins = Poppins({
-  subsets: ["devanagari"],
+  subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
@@ -53,16 +55,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={poppins.className}>
-        <Providers>
-          <div className="flex h-full w-screen flex-col bg-background font-sans">
+    <html lang="en" suppressHydrationWarning className="">
+      <body className={cn("min-h-screen", poppins.className)}>
+        <ClerkProvider dynamic>
+          <Providers>
             <Header />
-            {children}
-            <Analytics />
-            <SpeedInsights />
-          </div>
-        </Providers>
+            <div className="flex w-screen flex-col bg-background font-sans">
+              {children}
+              <Analytics />
+              <SpeedInsights />
+            </div>
+          </Providers>
+        </ClerkProvider>
       </body>
     </html>
   );

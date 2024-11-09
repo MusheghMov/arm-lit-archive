@@ -81,9 +81,9 @@ export default async function AuthorPage({
         </div>
       </div>
       <div className="flex w-full grow-[2] flex-col space-y-10 px-8 py-4 lg:overflow-hidden lg:px-10">
-        <div className="flex max-w-[900px] flex-col space-y-2">
+        <div className="flex flex-col gap-4 lg:max-w-[70%]">
           <p className="text-4xl font-medium capitalize">{author?.name}</p>
-          <p className="text-gray-500">{author?.bio}</p>
+          <p className="text-foreground/65">{author?.bio}</p>
         </div>
       </div>
     </div>
