@@ -173,6 +173,9 @@ export default function Header() {
               <DropdownMenuItem onClick={() => router.push("/books")}>
                 Books
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/articles")}>
+                Articles
+              </DropdownMenuItem>
               {isSignedIn && (
                 <DropdownMenuItem onClick={() => router.push("/profile")}>
                   My Collection
