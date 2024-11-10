@@ -14,7 +14,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 export default function Hero() {
   return (
-    <div className="flex h-min items-center justify-center overflow-hidden md:py-20">
+    <div className="flex h-min items-center justify-center overflow-hidden lg:py-16">
       <Carousel
         plugins={[
           Autoplay({

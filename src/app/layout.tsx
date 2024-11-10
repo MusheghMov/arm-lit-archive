@@ -60,7 +60,7 @@ export default function RootLayout({
         <ClerkProvider dynamic>
           <Providers>
             <Header />
-            <div className="flex w-screen flex-col bg-background pt-7 font-sans">
+            <div className="flex w-screen flex-col bg-background py-7 font-sans">
               {children}
               <Analytics />
               <SpeedInsights />

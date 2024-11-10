@@ -2,6 +2,7 @@
 
 import db from "@/db";
 import {
+  articles,
   authors,
   books,
   userLikedBooks,
@@ -404,6 +405,20 @@ async function getAuthors({ search }: { search?: string } = {}) {
   return res;
 }
 
+async function getArticles() {
+  const articles = await db.query.articles.findMany();
+
+  return articles;
+}
+
+async function getArticleBySlug({ slug }: { slug: string }) {
+  const articleBySlug = await db.query.articles.findFirst({
+    where: (articles, { eq }) => eq(articles.slug, slug),
+  });
+
+  return articleBySlug;
+}
+
 async function createAuthor(
   data: z.infer<typeof schemaForCreateAuthor>,
   imageUrl: string | undefined
@@ -433,4 +448,6 @@ export {
   removeBooksFromUserLikedBooks,
   createAuthor,
   getAuthors,
+  getArticles,
+  getArticleBySlug,
 };

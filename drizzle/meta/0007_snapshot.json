@@ -1,8 +1,6 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "64f4a388-0456-4aac-9340-965bebbb0666",
-  "prevId": "6027bf05-b6f1-49c8-8ac8-70a5e7ecbc1f",
   "tables": {
     "author": {
       "name": "author",
@@ -60,7 +58,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "books": {
       "name": "books",
@@ -146,7 +145,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "user": {
       "name": "user",
@@ -191,13 +191,16 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {},
   "_meta": {
-    "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "64f4a388-0456-4aac-9340-965bebbb0666",
+  "prevId": "6027bf05-b6f1-49c8-8ac8-70a5e7ecbc1f",
+  "views": {}
 }

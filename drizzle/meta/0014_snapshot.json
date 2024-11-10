@@ -1,8 +1,6 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "94acc57e-307b-4f40-be1d-6bc6ebba37e9",
-  "prevId": "00a6b690-039a-4cc3-9e07-21d46bb22ab2",
   "tables": {
     "author": {
       "name": "author",
@@ -60,7 +58,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "books": {
       "name": "books",
@@ -146,7 +145,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "user": {
       "name": "user",
@@ -177,7 +177,8 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "userLikedAuthors": {
       "name": "userLikedAuthors",
@@ -202,32 +203,33 @@
         "userLikedAuthors_user_id_user_id_fk": {
           "name": "userLikedAuthors_user_id_user_id_fk",
           "tableFrom": "userLikedAuthors",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "userLikedAuthors_author_id_author_id_fk": {
           "name": "userLikedAuthors_author_id_author_id_fk",
           "tableFrom": "userLikedAuthors",
-          "tableTo": "author",
           "columnsFrom": [
             "author_id"
           ],
+          "tableTo": "author",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "userLikedBooks": {
       "name": "userLikedBooks",
@@ -252,38 +254,41 @@
         "userLikedBooks_user_id_user_id_fk": {
           "name": "userLikedBooks_user_id_user_id_fk",
           "tableFrom": "userLikedBooks",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "userLikedBooks_book_id_books_id_fk": {
           "name": "userLikedBooks_book_id_books_id_fk",
           "tableFrom": "userLikedBooks",
-          "tableTo": "books",
           "columnsFrom": [
             "book_id"
           ],
+          "tableTo": "books",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {},
   "_meta": {
-    "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "94acc57e-307b-4f40-be1d-6bc6ebba37e9",
+  "prevId": "00a6b690-039a-4cc3-9e07-21d46bb22ab2",
+  "views": {}
 }

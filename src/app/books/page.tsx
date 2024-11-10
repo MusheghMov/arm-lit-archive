@@ -54,7 +54,7 @@ export default function BooksPage() {
   }, [entry, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex w-full flex-col gap-6 px-8 py-10 lg:max-w-[80%]">
+    <div className="flex w-full flex-col gap-6 px-4 md:px-8 lg:max-w-[80%] lg:p-0">
       <Input
         {...register("search")}
         className="w-full sm:w-[400px]"

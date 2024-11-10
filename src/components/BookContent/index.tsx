@@ -20,7 +20,7 @@ export default function BookContent({
 
   return (
     <div className="flex h-full w-full flex-col items-center">
-      <div className="flex h-full w-full max-w-[85%] flex-col items-center gap-y-10 bg-background py-10 lg:pt-8">
+      <div className="flex h-full w-full flex-col items-center gap-y-10 bg-background px-4 md:px-8 lg:max-w-[80%] lg:p-0">
         <div className="flex w-full flex-col-reverse lg:flex-row">
           <div className="flex w-full flex-col items-center space-y-2 px-8">
             <div className="flex flex-row space-x-4">

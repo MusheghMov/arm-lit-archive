@@ -38,7 +38,11 @@ export default forwardRef(function BookCard(
           ratio={5 / 4}
           className="relative flex items-center justify-center transition-all group-hover:scale-125"
         >
-          <BookImage size={100} className="stroke-foreground text-slate-300" />
+          <BookImage
+            size={100}
+            strokeWidth={0.5}
+            className="stroke-foreground/40"
+          />
         </AspectRatio>
       </div>
 
