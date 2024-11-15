@@ -4,7 +4,7 @@ export default function BooksLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex w-full flex-row items-center justify-center gap-x-10">
+    <div className="mt-8 flex h-full w-full flex-row items-center justify-center gap-x-10 lg:mt-14">
       {children}
     </div>
   );

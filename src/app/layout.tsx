@@ -55,16 +55,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="">
-      <body className={cn("min-h-screen", poppins.className)}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={cn(
+          "relative flex h-full min-h-screen w-full flex-col pb-8",
+          poppins.className
+        )}
+      >
         <ClerkProvider dynamic>
           <Providers>
             <Header />
-            <div className="flex w-screen flex-col bg-background py-7 font-sans">
-              {children}
-              <Analytics />
-              <SpeedInsights />
-            </div>
+            {children}
+            <Analytics />
+            <SpeedInsights />
           </Providers>
         </ClerkProvider>
       </body>

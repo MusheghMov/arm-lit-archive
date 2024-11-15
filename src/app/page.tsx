@@ -18,7 +18,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="relative flex h-max w-full flex-col">
+    <div className="relative flex h-max w-full flex-col md:mt-8">
       <Hero />
       <div className="flex w-full flex-col space-y-10 px-4 py-10 lg:px-10">
         <RecommendationSection

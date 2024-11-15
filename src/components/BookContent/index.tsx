@@ -20,6 +20,15 @@ export default function BookContent({
 
   return (
     <div className="flex h-full w-full flex-col items-center">
+      {/* {book?.userReadingProgress[0]?.lastPageNumber ? ( */}
+      {/*   <Progress */}
+      {/*     className="absolute top-0 h-1 rounded-[0]" */}
+      {/*     value={ */}
+      {/*       (book.userReadingProgress[0].lastPageNumber / book.bookPagesCount) * */}
+      {/*       100 */}
+      {/*     } */}
+      {/*   /> */}
+      {/* ) : null} */}
       <div className="flex h-full w-full flex-col items-center gap-y-10 bg-background px-4 md:px-8 lg:max-w-[80%] lg:p-0">
         <div className="flex w-full flex-col-reverse lg:flex-row">
           <div className="flex w-full flex-col items-center space-y-2 px-8">
@@ -68,16 +77,6 @@ export default function BookContent({
           {book.text}
         </article>
       </div>
-
-      {book?.userReadingProgress[0]?.lastPageNumber ? (
-        <Progress
-          className="sticky bottom-0 h-1 rounded-[0]"
-          value={
-            (book.userReadingProgress[0].lastPageNumber / book.bookPagesCount) *
-            100
-          }
-        />
-      ) : null}
     </div>
   );
 }

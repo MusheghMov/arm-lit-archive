@@ -11,7 +11,7 @@ export default async function ProfilePage() {
   });
 
   return (
-    <div className="flex w-full flex-col items-start justify-between space-y-10 self-center px-4 md:px-8 lg:max-w-[80%] lg:p-0">
+    <div className="mt-8 flex w-full flex-col items-start justify-between space-y-10 self-center px-4 md:px-8 lg:mt-14 lg:max-w-[80%] lg:p-0">
       {/* <p className="text-2xl font-bold capitalize"> my profile</p> */}
       <div className="flex flex-col space-y-4">
         <p className="font-bold capitalize">favorite books</p>
